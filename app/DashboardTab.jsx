@@ -3,6 +3,7 @@ function DashboardTab({ onNavigate }) {
   const [window, setWindow] = React.useState('week'); // 'week' | 'month' | 'year'
   const [trustOpen, setTrustOpen] = React.useState(false);
   const [hovInsight, setHovInsight] = React.useState(false);
+  const [pdfOpen, setPdfOpen] = React.useState(false);
 
   const data = {
     week:  { saved: 8.40,  savedTrend: '+12% vs last week', co2: 14.2,  kwh: 38,  insight: '23% better than Fulham average. Chat to your assistant to climb the leaderboard' },
@@ -47,6 +48,8 @@ function DashboardTab({ onNavigate }) {
       scrollRef.current.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
     });
   }, [trustOpen]);
+
+  if (pdfOpen) return <PdfViewer onBack={() => setPdfOpen(false)} />;
 
   return (
     <div className="pw-screen" ref={scrollRef}>
@@ -190,14 +193,7 @@ function DashboardTab({ onNavigate }) {
             title="Your weekly report is ready!"
             detail="Tap to download your PDF summary"
             accent="lime"
-            onClick={() => {
-              const a = document.createElement('a');
-              a.href = 'app/peerway_weekly_report.pdf';
-              a.download = 'peerway_weekly_report.pdf';
-              document.body.appendChild(a);
-              a.click();
-              document.body.removeChild(a);
-            }}
+            onClick={() => setPdfOpen(true)}
           />
           <InsightCard
             day="Thu"
@@ -315,6 +311,7 @@ function InsightCard({ day, icon, title, detail, accent, onClick }) {
       <div style={{
         width: 40, height: 40, borderRadius: 10,
         background: accent === 'lime' ? 'var(--lime-50)' : 'var(--cream-100)',
+        color: accent === 'lime' ? 'var(--lime-600)' : 'var(--ink-500)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         fontSize: 20, flexShrink: 0,
       }}>
@@ -349,6 +346,107 @@ function InsightCard({ day, icon, title, detail, accent, onClick }) {
         <IconChevron size={13} style={{ color: 'var(--ink-400)', flexShrink: 0, alignSelf: 'center' }}/>
       )}
     </Tag>
+  );
+}
+
+function PdfViewer({ onBack }) {
+  const isMobile =
+    window.matchMedia('(max-width: 600px) and (pointer: coarse)').matches ||
+    window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true;
+
+  const containerRef = React.useRef();
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(false);
+
+  React.useEffect(() => {
+    const pdfjsLib = window.pdfjsLib;
+    if (!pdfjsLib) { setError(true); setLoading(false); return; }
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    pdfjsLib.getDocument('app/peerway_weekly_report.pdf').promise
+      .then(pdf => {
+        const container = containerRef.current;
+        if (!container) return;
+        container.innerHTML = '';
+        const renders = [];
+        for (let n = 1; n <= pdf.numPages; n++) {
+          renders.push(
+            pdf.getPage(n).then(page => {
+              const vp = page.getViewport({ scale: window.devicePixelRatio || 1.5 });
+              const canvas = document.createElement('canvas');
+              canvas.width = vp.width;
+              canvas.height = vp.height;
+              canvas.style.cssText = 'width:100%;display:block;margin-bottom:8px;border-radius:4px;';
+              container.appendChild(canvas);
+              return page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+            })
+          );
+        }
+        return Promise.all(renders);
+      })
+      .then(() => setLoading(false))
+      .catch(() => { setError(true); setLoading(false); });
+  }, []);
+
+  const handleDownload = () => {
+    const a = document.createElement('a');
+    a.href = 'app/peerway_weekly_report.pdf';
+    a.download = 'peerway_weekly_report.pdf';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  };
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: 'var(--cream-50)' }}>
+      <div style={{
+        padding: `${isMobile ? 26 : 66}px 20px 16px`,
+        background: 'var(--cream-50)',
+        borderBottom: '1px solid var(--cream-200)',
+        display: 'flex', alignItems: 'center', gap: 8,
+        flexShrink: 0,
+      }}>
+        <button onClick={onBack} style={{
+          appearance: 'none', border: 0, background: 'transparent',
+          display: 'flex', alignItems: 'center', gap: 4,
+          color: 'var(--ink-600)', fontSize: 13, cursor: 'pointer', padding: 0,
+          fontFamily: 'var(--font-sans)',
+        }}>
+          <IconChevron size={14} dir="left"/>
+          <span>Back</span>
+        </button>
+        <div style={{
+          flex: 1, textAlign: 'center',
+          fontSize: 14, fontWeight: 600, color: 'var(--ink-900)',
+          letterSpacing: '-0.005em',
+        }}>Weekly Report</div>
+        <button onClick={handleDownload} style={{
+          appearance: 'none', border: 0, background: 'transparent',
+          display: 'flex', alignItems: 'center',
+          color: 'var(--ink-600)', cursor: 'pointer', padding: 0,
+        }}>
+          <IconDownload size={16}/>
+        </button>
+      </div>
+
+      <div style={{ flex: 1, overflowY: 'auto', padding: '12px' }}>
+        {loading && !error && (
+          <div style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            height: '100%', color: 'var(--ink-400)', fontSize: 13,
+            fontFamily: 'var(--font-sans)',
+          }}>Loading…</div>
+        )}
+        {error && (
+          <div style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            height: '100%', color: 'var(--ink-400)', fontSize: 13,
+            fontFamily: 'var(--font-sans)', textAlign: 'center', padding: '0 24px',
+          }}>Could not load report. Tap the download button to open it.</div>
+        )}
+        <div ref={containerRef}/>
+      </div>
+    </div>
   );
 }
 

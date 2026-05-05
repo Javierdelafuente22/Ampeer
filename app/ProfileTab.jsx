@@ -7,6 +7,7 @@ function ProfileTab() {
   const [openPanel, setOpenPanel] = React.useState(null);
   const [supportMsg, setSupportMsg] = React.useState('');
   const [supportSent, setSupportSent] = React.useState(false);
+  const [csvOpen, setCsvOpen] = React.useState(false);
 
   const downloadCsv = () => {
     const header = 'Date,Time,Type,kWh,Rate (p/kWh),Counterparty,Grid Equiv Rate (p/kWh),Saving (£),CO2 Saved (kg)';
@@ -65,7 +66,7 @@ function ProfileTab() {
           <p style={{ marginBottom: 16 }}>
             Files are delivered as CSV, ready to open in Excel or import into another service. The export typically takes a few seconds.
           </p>
-          <button className="pw-btn" style={{ height: 48, fontSize: 14 }} onClick={downloadCsv}>
+          <button className="pw-btn" style={{ height: 48, fontSize: 14 }} onClick={() => setCsvOpen(true)}>
             <IconDownload size={14}/>
             <span>Download my data (.csv)</span>
           </button>
@@ -153,6 +154,8 @@ function ProfileTab() {
       ),
     },
   };
+
+  if (csvOpen) return <CsvViewer onBack={() => setCsvOpen(false)} onDownload={downloadCsv} />;
 
   // Detail panel view
   if (openPanel && panels[openPanel]) {
@@ -517,6 +520,105 @@ function Toggle({ on, onChange }) {
         transition: 'left .18s',
       }}/>
     </button>
+  );
+}
+
+function CsvViewer({ onBack, onDownload }) {
+  const isMobile =
+    window.matchMedia('(max-width: 600px) and (pointer: coarse)').matches ||
+    window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true;
+
+  const headers = ['Date', 'Time', 'Type', 'kWh', 'Rate (p)', 'Peer', 'Saving (£)', 'CO₂ (kg)'];
+  const rows = [
+    ['2026-04-28','10:30','Export','2.4','18.5','#12','0.31','0.98'],
+    ['2026-04-28','11:00','Export','1.8','18.5','#07','0.23','0.74'],
+    ['2026-04-28','14:15','Export','3.1','17.2','#23','0.36','1.27'],
+    ['2026-04-27','09:45','Export','1.2','18.5','#12','0.16','0.49'],
+    ['2026-04-27','12:00','Export','2.8','17.8','#31','0.34','1.15'],
+    ['2026-04-27','16:30','Import','1.5','22.4','#09','0.02','—'],
+    ['2026-04-26','10:00','Export','3.6','18.5','#07','0.47','1.47'],
+    ['2026-04-26','13:30','Export','2.2','17.2','#45','0.26','0.90'],
+    ['2026-04-25','11:15','Export','1.9','18.5','#12','0.25','0.78'],
+    ['2026-04-25','14:00','Export','2.7','17.8','#23','0.33','1.10'],
+    ['2026-04-25','17:45','Import','2.1','21.8','#31','0.05','—'],
+    ['2026-04-24','09:30','Export','3.4','18.5','#09','0.44','1.39'],
+    ['2026-04-24','12:45','Export','1.6','17.2','#07','0.19','0.65'],
+    ['2026-04-23','10:15','Export','2.9','18.5','#45','0.38','1.19'],
+    ['2026-04-23','15:00','Import','1.8','22.4','#12','0.03','—'],
+    ['2026-04-22','11:00','Export','2.5','17.8','#23','0.31','1.02'],
+    ['2026-04-22','13:30','Export','3.0','18.5','#31','0.39','1.23'],
+    ['2026-04-21','10:00','Export','1.4','17.2','#09','0.16','0.57'],
+    ['2026-04-21','14:30','Export','2.6','18.5','#07','0.34','1.06'],
+    ['2026-04-21','18:00','Import','1.3','21.8','#45','0.03','—'],
+  ];
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: 'var(--cream-50)' }}>
+      {/* Header */}
+      <div style={{
+        padding: `${isMobile ? 26 : 66}px 20px 16px`,
+        background: 'var(--cream-50)',
+        borderBottom: '1px solid var(--cream-200)',
+        display: 'flex', alignItems: 'center', gap: 8,
+        flexShrink: 0,
+      }}>
+        <button onClick={onBack} style={{
+          appearance: 'none', border: 0, background: 'transparent',
+          display: 'flex', alignItems: 'center', gap: 4,
+          color: 'var(--ink-600)', fontSize: 13, cursor: 'pointer', padding: 0,
+          fontFamily: 'var(--font-sans)',
+        }}>
+          <IconChevron size={14} dir="left"/>
+          <span>Back</span>
+        </button>
+        <div style={{
+          flex: 1, textAlign: 'center',
+          fontSize: 14, fontWeight: 600, color: 'var(--ink-900)',
+          letterSpacing: '-0.005em',
+        }}>Trading data</div>
+        <button onClick={onDownload} style={{
+          appearance: 'none', border: 0, background: 'transparent',
+          display: 'flex', alignItems: 'center', gap: 4,
+          color: 'var(--ink-600)', fontSize: 13, cursor: 'pointer', padding: 0,
+          fontFamily: 'var(--font-sans)',
+        }}>
+          <IconDownload size={16}/>
+        </button>
+      </div>
+
+      {/* Table */}
+      <div style={{ flex: 1, overflow: 'auto' }}>
+        <table style={{ borderCollapse: 'collapse', fontSize: 12, fontFamily: 'var(--font-sans)', width: '100%' }}>
+          <thead>
+            <tr style={{ background: 'var(--cream-100)', position: 'sticky', top: 0 }}>
+              {headers.map(h => (
+                <th key={h} style={{
+                  padding: '8px 10px', textAlign: 'left',
+                  borderBottom: '1px solid var(--cream-200)',
+                  color: 'var(--ink-500)', fontWeight: 500,
+                  whiteSpace: 'nowrap', fontSize: 11,
+                }}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row, i) => (
+              <tr key={i} style={{ borderBottom: '1px solid var(--cream-200)', background: i % 2 === 0 ? 'var(--surface)' : 'var(--cream-50)' }}>
+                {row.map((cell, j) => (
+                  <td key={j} style={{
+                    padding: '8px 10px', color: 'var(--ink-900)',
+                    whiteSpace: 'nowrap',
+                    color: cell === 'Import' ? 'var(--ink-500)' : cell === 'Export' ? 'var(--lime-600)' : 'var(--ink-900)',
+                  }}>{cell}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
   );
 }
 
