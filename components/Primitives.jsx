@@ -123,11 +123,9 @@ function PwPageTitle({ eyebrow, title, subtitle, size = 32 }) {
   );
 }
 
-// Small info tooltip — opens above trigger, flips left/right to stay in bounds, one at a time
+// Small info tooltip — always opens upward and to the right; arrow at bottom-left
 function PwTooltip({ label }) {
   const [open, setOpen] = React.useState(false);
-  const [side, setSide] = React.useState('right');
-  const btnRef = React.useRef(null);
   const idRef = React.useRef(Math.random());
 
   React.useEffect(() => {
@@ -137,15 +135,6 @@ function PwTooltip({ label }) {
     window.addEventListener('pw-tooltip-open', handler);
     return () => window.removeEventListener('pw-tooltip-open', handler);
   }, []);
-
-  React.useEffect(() => {
-    if (open && btnRef.current) {
-      const r = btnRef.current.getBoundingClientRect();
-      // 220px tooltip + 8px offset = needs ~228px of space on the opening side
-      const rightSpace = window.innerWidth - r.left;
-      setSide(rightSpace < 280 ? 'left' : 'right');
-    }
-  }, [open]);
 
   const handleToggle = () => {
     const next = !open;
@@ -157,7 +146,7 @@ function PwTooltip({ label }) {
 
   return (
     <div style={{ position: 'relative', display: 'inline-flex' }}>
-      <button ref={btnRef} onClick={handleToggle} style={{
+      <button onClick={handleToggle} style={{
         appearance: 'none', background: 'transparent', border: 0, padding: 0,
         color: 'var(--ink-400)', cursor: 'pointer',
         display: 'inline-flex', alignItems: 'center',
@@ -166,8 +155,7 @@ function PwTooltip({ label }) {
       </button>
       {open && (
         <div role="tooltip" onClick={() => setOpen(false)} style={{
-          position: 'absolute', bottom: '140%',
-          ...(side === 'right' ? { left: -8 } : { right: -8 }),
+          position: 'absolute', bottom: '140%', left: -8,
           zIndex: 10,
           width: 175, padding: '10px 12px',
           background: 'var(--ink-900)', color: '#F2EFE7',
@@ -176,8 +164,7 @@ function PwTooltip({ label }) {
           letterSpacing: '-0.005em',
         }}>
           <div style={{
-            position: 'absolute', bottom: -5,
-            ...(side === 'right' ? { left: 12 } : { right: 12 }),
+            position: 'absolute', bottom: -5, left: 12,
             width: 10, height: 10,
             background: 'var(--ink-900)', transform: 'rotate(45deg)',
           }}/>
