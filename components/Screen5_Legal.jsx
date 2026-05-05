@@ -133,7 +133,7 @@ function Screen5_Legal({ onNext, onBack }) {
   return (
     <PwScreen step={4} onBack={onBack}>
       <PwPageTitle
-        eyebrow="Step 4 of 4— Consent"
+        eyebrow="Step 4 of 4 — Consent"
         title="Terms, in plain English."
         subtitle="The short version of how your data is handled is below."
         size={32}

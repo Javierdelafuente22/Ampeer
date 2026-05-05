@@ -163,7 +163,7 @@ function Screen3_Savings({ state, onNext, onBack }) {
               <span style={{ color: 'var(--ink-600)' }}>Avg. household consumption</span>
               <span className="t-num" style={{ color: 'var(--ink-900)' }}>9300 kWh</span>
               <span style={{ color: 'var(--ink-600)' }}>Avg. import price </span>
-              <span className="t-num" style={{ color: 'var(--lime-600)', fontWeight: 600 }}>17.6p / kWh</span>
+              <span className="t-num" style={{ color: 'var(--ink-900)', fontWeight: 600 }}>17.6p / kWh</span>
               <span style={{ color: 'var(--ink-600)' }}>Peerway's avg. savings</span>
               <span className="t-num" style={{ color: 'var(--lime-600)', fontWeight: 600 }}>24%</span>
             </div>

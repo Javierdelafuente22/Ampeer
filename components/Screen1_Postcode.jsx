@@ -15,7 +15,7 @@ function Screen1_Postcode({ state, setState, onNext }) {
 
   return (
     <PwScreen step={0}>
-      <div style={{ marginBottom: 78 }}/>
+      <div style={{ marginBottom: 28 }}/>
       <PwPageTitle
         eyebrow=""
         title="Welcome to Peerway, Sarah."

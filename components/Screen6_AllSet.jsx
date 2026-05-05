@@ -11,7 +11,7 @@ function Screen6_AllSet({ onNext, onBack }) {
 
       {/* Projected numbers */}
       <div style={{ marginTop: 24 }}>
-        <div className="t-label" style={{ color: 'var(--ink-400)', marginBottom: 12 }}>
+        <div className="t-label" style={{ color: 'var(--ink-400)', marginBottom: 12, fontSize: 12 }}>
           Your first month, projected
         </div>
         <div style={{
@@ -23,7 +23,7 @@ function Screen6_AllSet({ onNext, onBack }) {
         }}>
           {[
             { num: '47',  unit: 'neighbors' },
-            { num: '42', unit: 'savings' },
+            { num: '£42', unit: 'savings' },
             { num: '32%', unit: 'green mix' },
           ].map((s, i) => (
             <div key={i} style={{
@@ -45,29 +45,25 @@ function Screen6_AllSet({ onNext, onBack }) {
 
       {/* What happens next */}
       <div style={{ marginTop: 28 }}>
-        <div className="t-label" style={{ color: 'var(--ink-400)', marginBottom: 12 }}>
+        <div className="t-label" style={{ color: 'var(--ink-400)', marginBottom: 12, fontSize: 13 }}>
           What happens next
         </div>
         <div style={{ padding: '0 4px' }}>
           {[
-            { when: 'Tonight',           what: 'EV charges during your cheapest overnight window.',         live: true },
-            { when: 'Tomorrow, 7am',     what: 'We start routing solar surplus to your neighbors in Fulham.' },
-            { when: 'Sunday',            what: 'Your first weekly savings report.' },
+            { when: 'Tonight',           what: 'EV charges during your cheapest overnight window.',         icon: <IconCar size={18}/> },
+            { when: 'Tomorrow, 7am',     what: 'We start routing solar surplus to your neighbors in Fulham.', icon: <IconSolar size={18}/> },
+            { when: 'Sunday',            what: 'Your first weekly savings report.',                          icon: <IconDoc size={18}/> },
           ].map((r, i) => (
             <div key={i} style={{
               display: 'flex', gap: 14, padding: '14px 0',
               borderBottom: i < 2 ? '1px solid var(--cream-200)' : 0,
             }}>
               <div style={{
-                width: 28, flexShrink: 0, display: 'flex', flexDirection: 'column',
-                alignItems: 'center',
+                width: 28, flexShrink: 0, display: 'flex',
+                alignItems: 'flex-start', justifyContent: 'center', paddingTop: 2,
+                color: 'var(--lime-600)',
               }}>
-                <div style={{
-                  width: 10, height: 10, borderRadius: 999,
-                  background: r.live ? 'var(--lime-500)' : 'var(--cream-200)',
-                  boxShadow: r.live ? '0 0 0 4px rgba(0,192,111,0.20)' : 'none',
-                  marginTop: 4,
-                }}/>
+                {r.icon}
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div className="t-label" style={{ color: 'var(--ink-400)', marginBottom: 2 }}>

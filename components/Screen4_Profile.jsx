@@ -3,11 +3,11 @@ function Screen4_Profile({ state, setState, onNext, onBack }) {
   const [editing, setEditing] = React.useState(null);
 
   const facts = state.profile || [
-    { id: 'name',   icon: <IconHome size={16}/>,      label: 'Name',            value: 'Sarah Chen',               why: "So we can personalise your dashboard and weekly reports." },
-    { id: 'solar',  icon: <IconSolar size={16}/>,     label: 'Solar',           value: '8 panels · 3.2 kWp',       why: "So we can trade based on your realistic surplus capacity." },
-    { id: 'ev',     icon: <IconCar size={16}/>,       label: 'EV',              value: 'Tesla Model 3',            why: "So we can charge during cheap or green windows automatically." },
-    { id: 'work',   icon: <IconBriefcase size={16}/>, label: 'Work pattern',    value: 'Home 3 days / week',       why: "So we can adapt to your habits." },
-    { id: 'house',  icon: <IconPeople size={16}/>,    label: 'Household',       value: '2 adults',                 why: "So we shape your consumption." },
+    { id: 'name',   icon: <IconHome size={16}/>,      label: 'Name',            value: 'Sarah Chen',               why: "It appears on your dashboard and weekly reports" },
+    { id: 'solar',  icon: <IconSolar size={16}/>,     label: 'Solar',           value: '8 panels · 3.2 kWp',       why: "Helps us know how much you can trade" },
+    { id: 'ev',     icon: <IconCar size={16}/>,       label: 'EV',              value: 'Tesla Model 3',            why: "We schedule charging around your cheapest windows" },
+    { id: 'work',   icon: <IconBriefcase size={16}/>, label: 'Work pattern',    value: 'Home 3 days / week',       why: "Your trading schedule adapts to when you're home" },
+    { id: 'house',  icon: <IconPeople size={16}/>,    label: 'Household',       value: '2 adults',                 why: "More people at home means higher consumption" },
   ];
 
   const saveEdit = (id, value) => {
