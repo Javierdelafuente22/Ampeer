@@ -5,7 +5,7 @@
 function SystemRail() {
   return (
     <div style={{ fontFamily: 'var(--font-sans)' }}>
-      <div className="t-label" style={{ color: 'var(--ink-400)', marginBottom: 14 }}>
+      <div className="t-label" style={{ color: 'var(--ink-500)', marginBottom: 14 }}>
         Peerway · design system
       </div>
 
@@ -47,7 +47,7 @@ function SystemRail() {
           <span className="t-num" style={{ fontSize: 22, color: 'var(--ink-900)' }}>£180–340</span>
         </TypeRow>
         <TypeRow label="Label · 11 uppercase">
-          <span className="t-label" style={{ color: 'var(--ink-400)' }}>Estimated savings</span>
+          <span className="t-label" style={{ color: 'var(--ink-500)' }}>Estimated savings</span>
         </TypeRow>
       </div>
 
@@ -183,7 +183,7 @@ function NotesRail({ step }) {
   const data = NOTES[step] || NOTES[0];
   return (
     <div style={{ fontFamily: 'var(--font-sans)' }}>
-      <div className="t-label" style={{ color: 'var(--ink-400)', marginBottom: 14 }}>
+      <div className="t-label" style={{ color: 'var(--ink-500)', marginBottom: 14 }}>
         Design notes
       </div>
       <div className="t-display" style={{

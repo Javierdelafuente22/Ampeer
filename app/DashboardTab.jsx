@@ -82,7 +82,7 @@ function DashboardTab() {
 
         {/* Hero — money saved */}
         <div style={{ marginBottom: 28 }}>
-          <div className="t-label" style={{ color: 'var(--ink-400)', marginBottom: 10, fontSize: 12 }}>
+          <div className="t-label" style={{ color: 'var(--ink-500)', marginBottom: 10 }}>
             Saved this {window}
           </div>
           <div style={{
@@ -154,7 +154,7 @@ function DashboardTab() {
           marginBottom: 12,
           scrollMarginTop: 80,
         }}>
-          <div className="t-label" style={{ color: 'var(--ink-400)', fontSize: 12 }}>
+          <div className="t-label" style={{ color: 'var(--ink-500)' }}>
             This week's moments
           </div>
           <span className="t-mono" style={{ color: 'var(--ink-400)', fontSize: 11 }}>
@@ -249,7 +249,7 @@ function MetricCard({ icon, label, value, unit }) {
         color: 'var(--ink-400)', marginBottom: 8,
       }}>
         {icon}
-        <span className="t-label" style={{ fontSize: 12 }}>{label}</span>
+        <span className="t-label">{label}</span>
       </div>
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
         <span className="t-num" style={{
@@ -283,7 +283,7 @@ function InsightCard({ day, icon, title, detail, accent }) {
         <div style={{
           display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3,
         }}>
-          <span className="t-label" style={{ color: 'var(--ink-400)' }}>{day}</span>
+          <span className="t-label" style={{ color: 'var(--ink-500)' }}>{day}</span>
           {accent === 'lime' && (
             <span style={{
               width: 4, height: 4, borderRadius: 999,

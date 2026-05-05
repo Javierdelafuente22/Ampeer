@@ -118,7 +118,7 @@ function AppLeftRail({ active }) {
       background: '#fff', borderRadius: 'var(--r-md)',
       padding: 18, boxShadow: 'var(--shadow-sm)',
     }}>
-      <div className="t-label" style={{ color: 'var(--ink-400)', marginBottom: 14 }}>
+      <div className="t-label" style={{ color: 'var(--ink-500)', marginBottom: 14 }}>
         Five tabs
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -211,7 +211,7 @@ function AppNotesRail({ tab }) {
       background: '#fff', borderRadius: 'var(--r-md)',
       padding: 18, boxShadow: 'var(--shadow-sm)',
     }}>
-      <div className="t-label" style={{ color: 'var(--ink-400)', marginBottom: 4 }}>
+      <div className="t-label" style={{ color: 'var(--ink-500)', marginBottom: 4 }}>
         Design notes
       </div>
       <div style={{

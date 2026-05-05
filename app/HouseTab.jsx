@@ -64,7 +64,7 @@ function HouseTab() {
 
         {/* Live readouts */}
         <div style={{ padding: '20px 24px 0' }}>
-          <div className="t-label" style={{ color: 'var(--ink-400)', marginBottom: 12, fontSize: 12 }}>
+          <div className="t-label" style={{ color: 'var(--ink-500)', marginBottom: 12 }}>
             Live readouts
           </div>
           <div style={{
@@ -90,7 +90,7 @@ function Readout({ icon, label, value, unit, accent }) {
     }}>
       <div style={{
         display: 'flex', alignItems: 'center', gap: 5,
-        color: accent ? 'var(--lime-600)' : 'var(--ink-400)', marginBottom: 6,
+        color: accent ? 'var(--lime-600)' : 'var(--ink-500)', marginBottom: 6,
       }}>
         {icon}
         <span className="t-label" style={{ fontSize: 11 }}>{label}</span>

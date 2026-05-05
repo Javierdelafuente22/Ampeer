@@ -75,7 +75,7 @@ function Screen4_Profile({ state, setState, onNext, onBack }) {
               }}>{f.icon}</div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <span className="t-label" style={{ color: 'var(--ink-400)' }}>{f.label}</span>
+                  <span className="t-label" style={{ color: 'var(--ink-500)' }}>{f.label}</span>
                   <PwTooltip label={f.why}/>
                 </div>
                 {editing === f.id ? (

@@ -54,7 +54,7 @@ function Screen3_Savings({ state, onNext, onBack }) {
               {hiAnim}
             </span>
           </div>
-          <div className="t-label" style={{ color: 'var(--ink-400)', marginTop: 10 }}>
+          <div className="t-label" style={{ color: 'var(--ink-500)', marginTop: 10 }}>
             per year
           </div>
         </div>
@@ -65,7 +65,7 @@ function Screen3_Savings({ state, onNext, onBack }) {
             display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
             marginBottom: 10,
           }}>
-            <span className="t-label" style={{ color: 'var(--ink-400)' }}>Comparison</span>
+            <span className="t-label" style={{ color: 'var(--ink-500)' }}>Comparison</span>
             <span className="t-mono" style={{ color: 'var(--ink-400)' }}>£/year</span>
           </div>
 
@@ -197,7 +197,7 @@ function HeroRow({ prefix, value, big }) {
       marginBottom: big ? 0 : 8,
     }}>
       <span className="t-label" style={{
-        color: 'var(--ink-400)', width: 40, flexShrink: 0,
+        color: 'var(--ink-500)', width: 40, flexShrink: 0,
       }}>{prefix}</span>
       <span className="t-num" style={{
         fontSize: big ? 72 : 40,

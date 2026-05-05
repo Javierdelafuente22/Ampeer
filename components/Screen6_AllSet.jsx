@@ -11,7 +11,7 @@ function Screen6_AllSet({ onNext, onBack }) {
 
       {/* Projected numbers */}
       <div style={{ marginTop: 24 }}>
-        <div className="t-label" style={{ color: 'var(--ink-400)', marginBottom: 12, fontSize: 12 }}>
+        <div className="t-label" style={{ color: 'var(--ink-500)', marginBottom: 12 }}>
           Your first month, projected
         </div>
         <div style={{
@@ -35,7 +35,7 @@ function Screen6_AllSet({ onNext, onBack }) {
                 fontSize: 28, color: 'var(--ink-900)', lineHeight: 1,
                 letterSpacing: '-0.04em', fontWeight: 600,
               }}>{s.num}</div>
-              <div className="t-label" style={{ color: 'var(--ink-400)', marginTop: 8 }}>
+              <div className="t-label" style={{ color: 'var(--ink-500)', marginTop: 8 }}>
                 {s.unit}
               </div>
             </div>
@@ -45,7 +45,7 @@ function Screen6_AllSet({ onNext, onBack }) {
 
       {/* What happens next */}
       <div style={{ marginTop: 28 }}>
-        <div className="t-label" style={{ color: 'var(--ink-400)', marginBottom: 12, fontSize: 13 }}>
+        <div className="t-label" style={{ color: 'var(--ink-500)', marginBottom: 12 }}>
           What happens next
         </div>
         <div style={{ padding: '0 4px' }}>
@@ -66,7 +66,7 @@ function Screen6_AllSet({ onNext, onBack }) {
                 {r.icon}
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div className="t-label" style={{ color: 'var(--ink-400)', marginBottom: 2 }}>
+                <div className="t-label" style={{ color: 'var(--ink-500)', marginBottom: 2 }}>
                   {r.when}
                 </div>
                 <div style={{ fontSize: 14, color: 'var(--ink-900)', lineHeight: 1.45 }}>
