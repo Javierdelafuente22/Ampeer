@@ -80,7 +80,7 @@ function Screen6_AllSet({ onNext, onBack }) {
 
       <div style={{ marginTop: 32 }}>
         <PwButton onClick={onNext} icon={<IconArrowRight size={16}/>}>
-          Open my dashboard
+          Explore Peerway
         </PwButton>
       </div>
     </PwScreen>

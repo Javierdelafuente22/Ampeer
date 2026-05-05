@@ -191,6 +191,16 @@ function IOSDevice({
   children, width = 402, height = 874, dark = false,
   title, keyboard = false,
 }) {
+  const [liveTime, setLiveTime] = React.useState('');
+  React.useEffect(() => {
+    const fmt = () => new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Europe/London', hour: 'numeric', minute: '2-digit', hour12: false,
+    }).format(new Date());
+    setLiveTime(fmt());
+    const id = setInterval(() => setLiveTime(fmt()), 30000);
+    return () => clearInterval(id);
+  }, []);
+
   return (
     <div style={{
       width, height, borderRadius: 48, overflow: 'hidden',
@@ -206,7 +216,7 @@ function IOSDevice({
       }} />
       {/* status bar (absolute) */}
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 }}>
-        <IOSStatusBar dark={dark} />
+        <IOSStatusBar dark={dark} time={liveTime || '9:41'} />
       </div>
       {/* nav + content */}
       <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>

@@ -1,6 +1,7 @@
 // Community tab — animated map of anonymized trading peers
-function CommunityTab() {
+function CommunityTab({ highlight, onClearHighlight }) {
   const [tick, setTick] = React.useState(0);
+  const [glowing, setGlowing] = React.useState(false);
 
   React.useEffect(() => {
     let raf;
@@ -13,8 +14,24 @@ function CommunityTab() {
     return () => cancelAnimationFrame(raf);
   }, []);
 
+  React.useEffect(() => {
+    if (!highlight) return;
+    onClearHighlight && onClearHighlight(); // clear parent flag immediately so re-visits don't re-trigger
+    setGlowing(true);
+    const t = setTimeout(() => setGlowing(false), 4000);
+    return () => clearTimeout(t);
+  }, [highlight]);
+
   return (
     <div className="pw-screen">
+      <style>{`
+        @keyframes pwMapGlow {
+          0%   { box-shadow: var(--shadow-sm); }
+          30%  { box-shadow: var(--shadow-sm), 0 0 0 3px rgba(0,192,111,0.6), 0 0 32px rgba(0,192,111,0.25); }
+          40%  { box-shadow: var(--shadow-sm), 0 0 0 3px rgba(0,192,111,0.6), 0 0 32px rgba(0,192,111,0.25); }
+          100% { box-shadow: var(--shadow-sm); }
+        }
+      `}</style>
       <TabHeader
         eyebrow="Community"
         title="Your peers" />
@@ -30,7 +47,8 @@ function CommunityTab() {
           borderRadius: 'var(--r-lg)',
           background: 'linear-gradient(180deg, #EEF4E8 0%, #E4EEDC 100%)',
           overflow: 'hidden',
-          boxShadow: 'var(--shadow-sm)'
+          boxShadow: 'var(--shadow-sm)',
+          animation: glowing ? 'pwMapGlow 3.2s ease-in-out forwards' : 'none',
         }}>
           <CommunityMap tick={tick} />
 
@@ -277,7 +295,7 @@ function CommunityMap({ tick }) {
   const activeFlows = React.useMemo(() => {
     return [
       { from: YOU_NODE,  to: PEERS[1], color: '#00C06F' },  // YOU → home (NW-ish)
-      { from: PEERS[6], to: YOU_NODE,  color: '#00A862' },  // shop → YOU
+      { from: YOU_NODE,  to: PEERS[6],  color: '#00A862' },  // YOU → shop
       { from: PEERS[4], to: GRID_NODE, color: '#8aa69b' },  // school → GRID
       { from: PEERS[8], to: PEERS[2],  color: '#00A862' },  // home → shop (peer↔peer)
     ];

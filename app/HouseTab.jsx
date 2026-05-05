@@ -1,6 +1,9 @@
 // Your House — live energy flow, simplified & readable.
-function HouseTab() {
+const WEEK_SAVED = 8.40; // shared with Dashboard week figure
+
+function HouseTab({ onNavigate, highlight, onClearHighlight }) {
   const [tick, setTick] = React.useState(0);
+  const [glowing, setGlowing] = React.useState(false);
 
   React.useEffect(() => {
     let raf;
@@ -13,6 +16,14 @@ function HouseTab() {
     return () => cancelAnimationFrame(raf);
   }, []);
 
+  React.useEffect(() => {
+    if (!highlight) return;
+    onClearHighlight && onClearHighlight();
+    setGlowing(true);
+    const t = setTimeout(() => setGlowing(false), 4000);
+    return () => clearTimeout(t);
+  }, [highlight]);
+
   const scene = {
     solarKw: 3.8, useKw: 1.2, surplus: 2.6,
     caption: 'You are generating more than you use. The extra is powering 2 neighbours.',
@@ -20,7 +31,15 @@ function HouseTab() {
 
   return (
     <div className="pw-screen">
-      <TabHeader eyebrow="Home" title="Your house"/>
+      <style>{`
+        @keyframes pwHouseMapGlow {
+          0%   { box-shadow: var(--shadow-sm); }
+          30%  { box-shadow: var(--shadow-sm), 0 0 0 3px rgba(0,192,111,0.6), 0 0 32px rgba(0,192,111,0.25); }
+          40%  { box-shadow: var(--shadow-sm), 0 0 0 3px rgba(0,192,111,0.6), 0 0 32px rgba(0,192,111,0.25); }
+          100% { box-shadow: var(--shadow-sm); }
+        }
+      `}</style>
+      <TabHeader eyebrow="Home" title="Your home"/>
       <div className="t-label" style={{ color: 'var(--ink-500)', fontSize: 13, padding: '0 24px 14px' }}>
         Live energy flow
       </div>
@@ -34,35 +53,39 @@ function HouseTab() {
           background: 'linear-gradient(180deg, #F5EFE0 0%, #E8F2E4 100%)',
           overflow: 'hidden',
           boxShadow: 'var(--shadow-sm)',
+          animation: glowing ? 'pwHouseMapGlow 3.2s ease-in-out forwards' : 'none',
         }}>
           <HouseScene tick={tick}/>
         </div>
 
-        {/* Insight — dark card, matches Community/Dashboard style */}
-        <div style={{ padding: '24px 24px 0' }}>
-          <div style={{
-            padding: '16px 18px',
+        {/* Insight — tappable, navigates to Community */}
+        <div style={{ padding: '20px 24px 0' }}>
+          <button onClick={() => onNavigate && onNavigate('community', true)} style={{
+            appearance: 'none', border: 0, cursor: 'pointer', width: '100%', textAlign: 'left',
+            padding: '10px 14px',
             background: 'var(--ink-900)', color: '#fff',
             borderRadius: 'var(--r-md)',
-            display: 'flex', alignItems: 'flex-start', gap: 12,
+            display: 'flex', alignItems: 'center', gap: 10,
+            fontFamily: 'var(--font-sans)',
           }}>
             <div style={{
-              width: 36, height: 36, borderRadius: 10,
+              width: 28, height: 28, borderRadius: 8,
               background: 'rgba(0,192,111,0.20)', color: 'var(--lime-400)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               flexShrink: 0,
             }}>
-              <IconBolt size={16}/>
+              <IconBolt size={13}/>
             </div>
             <div style={{
               flex: 1,
-              fontSize: 14, lineHeight: 1.45, fontWeight: 500,
+              fontSize: 13, fontWeight: 500,
               color: '#fff', letterSpacing: '-0.005em',
               textWrap: 'pretty',
             }}>
               {scene.caption}
             </div>
-          </div>
+            <IconChevron size={13} style={{ color: 'rgba(255,255,255,0.45)', flexShrink: 0 }}/>
+          </button>
         </div>
 
         {/* Live readouts */}
@@ -77,6 +100,35 @@ function HouseTab() {
             <Readout icon={<IconHome size={14}/>}  label="Using"      value={scene.useKw.toFixed(1)}  unit="kW"/>
             <Readout icon={<IconArrowRight size={14}/>} label="Surplus" value={scene.surplus.toFixed(1)} unit="kW" accent/>
           </div>
+        </div>
+
+        {/* Savings card */}
+        <div style={{ padding: '12px 24px 0' }}>
+          <button onClick={() => onNavigate && onNavigate('dashboard')} style={{
+            appearance: 'none', border: 0, cursor: 'pointer', width: '100%', textAlign: 'left',
+            padding: '10px 14px',
+            background: 'var(--ink-900)', color: '#fff',
+            borderRadius: 'var(--r-md)',
+            display: 'flex', alignItems: 'center', gap: 10,
+            fontFamily: 'var(--font-sans)',
+          }}>
+            <div style={{
+              width: 28, height: 28, borderRadius: 8,
+              background: 'rgba(0,192,111,0.20)', color: 'var(--lime-400)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              flexShrink: 0, fontSize: 13, fontWeight: 700,
+              fontFamily: 'var(--font-sans)',
+            }}>
+              £
+            </div>
+            <span style={{
+              flex: 1, fontSize: 13, fontWeight: 500,
+              color: '#fff', letterSpacing: '-0.005em',
+            }}>
+              £{WEEK_SAVED.toFixed(2)} saved this week
+            </span>
+            <IconChevron size={13} style={{ color: 'rgba(255,255,255,0.45)', flexShrink: 0 }}/>
+          </button>
         </div>
       </div>
     </div>

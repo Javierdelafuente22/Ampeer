@@ -1,12 +1,12 @@
 // Dashboard — default landing tab. "Did I save money?"
-function DashboardTab() {
+function DashboardTab({ onNavigate }) {
   const [window, setWindow] = React.useState('week'); // 'week' | 'month' | 'year'
   const [trustOpen, setTrustOpen] = React.useState(false);
 
   const data = {
-    week:  { saved: 8.40,  savedTrend: '+12% vs last week', co2: 14.2,  kwh: 38,  insight: '23% better than Fulham average' },
-    month: { saved: 38.20, savedTrend: '+18% vs last month', co2: 62.8,  kwh: 168, insight: '29% better than Fulham average' },
-    year:  { saved: 284.60, savedTrend: 'On track for £440', co2: 540.1, kwh: 1420, insight: "You're top 3 in your community" },
+    week:  { saved: 8.40,  savedTrend: '+12% vs last week', co2: 14.2,  kwh: 38,  insight: '23% better than Fulham average. Chat to your assistant to climb the leaderboard' },
+    month: { saved: 38.20, savedTrend: '+18% vs last month', co2: 62.8,  kwh: 168, insight: '41% better than Fulham average. Chat to your assistant to climb the leaderboard' },
+    year:  { saved: 284.60, savedTrend: 'On track for £440', co2: 540.1, kwh: 1420, insight: "You're top 3 in your community. Chat to your assistant to climb the leaderboard" },
   }[window];
 
   // Animated count-up for hero £ figure
@@ -126,27 +126,30 @@ function DashboardTab() {
           <MetricCard icon={<IconBolt size={12}/>} label="kWh traded" value={data.kwh} unit="kWh"/>
         </div>
 
-        {/* Comparative badge — no arrow, no subtitle */}
-        <div style={{
-          padding: '14px 16px', marginBottom: 28,
+        {/* Comparative badge — tappable, navigates to Assistant */}
+        <button onClick={() => onNavigate && onNavigate('assistant')} style={{
+          appearance: 'none', border: 0, cursor: 'pointer', width: '100%', textAlign: 'left',
+          padding: '10px 14px', marginBottom: 28,
           background: 'var(--ink-900)', color: '#fff',
           borderRadius: 'var(--r-md)',
-          display: 'flex', alignItems: 'center', gap: 12,
+          display: 'flex', alignItems: 'center', gap: 10,
+          fontFamily: 'var(--font-sans)',
         }}>
           <div style={{
-            width: 36, height: 36, borderRadius: 10,
+            width: 28, height: 28, borderRadius: 8,
             background: 'rgba(0,192,111,0.20)', color: 'var(--lime-400)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             flexShrink: 0,
           }}>
-            <IconSparkle size={16}/>
+            <IconSparkle size={13}/>
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: 14, fontWeight: 600, color: '#fff' }}>
+            <div style={{ fontSize: 13, fontWeight: 500, color: '#fff', letterSpacing: '-0.005em' }}>
               {data.insight}
             </div>
           </div>
-        </div>
+          <IconChevron size={13} style={{ color: 'rgba(255,255,255,0.45)', flexShrink: 0 }}/>
+        </button>
 
         {/* Insights feed */}
         <div ref={momentsRef} style={{

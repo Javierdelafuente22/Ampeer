@@ -3,18 +3,25 @@
 // On desktop, keeps the centered IOSDevice card.
 
 function MainAppShell() {
-  const [tab, setTab] = React.useState('dashboard');
+  const [tab, setTab] = React.useState('home');
+  const [communityHighlight, setCommunityHighlight] = React.useState(false);
+  const [homeHighlight, setHomeHighlight] = React.useState(true);
 
   const isMobile =
     window.matchMedia('(max-width: 600px) and (pointer: coarse)').matches ||
     window.matchMedia('(display-mode: standalone)').matches ||
     window.navigator.standalone === true;
 
+  const handleNavigate = (nextTab, fromBanner = false) => {
+    setTab(nextTab);
+    if (fromBanner && nextTab === 'community') setCommunityHighlight(true);
+  };
+
   const renderTab = () => {
     switch (tab) {
-      case 'home':      return <HouseTab/>;
-      case 'community': return <CommunityTab/>;
-      case 'dashboard': return <DashboardTab/>;
+      case 'home':      return <HouseTab onNavigate={handleNavigate} highlight={homeHighlight} onClearHighlight={() => setHomeHighlight(false)}/>;
+      case 'community': return <CommunityTab highlight={communityHighlight} onClearHighlight={() => setCommunityHighlight(false)}/>;
+      case 'dashboard': return <DashboardTab onNavigate={handleNavigate}/>;
       case 'assistant': return <AssistantTab/>;
       case 'profile':   return <ProfileTab/>;
       default:          return <DashboardTab/>;

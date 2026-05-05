@@ -1,3 +1,7 @@
+﻿const nowBST = () => new Intl.DateTimeFormat('en-GB', {
+  timeZone: 'Europe/London', hour: 'numeric', minute: '2-digit', hour12: true,
+}).format(new Date()).replace(' ', '').toLowerCase();
+
 function SmartModeButton({ onClick }) {
   const [hov, setHov] = React.useState(false);
   return (
@@ -15,7 +19,6 @@ function SmartModeButton({ onClick }) {
         letterSpacing: '-0.01em', fontFamily: 'var(--font-sans)',
         transition: 'background .15s, color .15s, transform .15s',
         transform: hov ? 'translateY(-2px)' : 'none',
-        marginTop: -3,
         animation: 'pwSmartAttention 1.6s ease-out 0.8s 1 both',
       }}
     >
@@ -27,14 +30,21 @@ function SmartModeButton({ onClick }) {
 
 // Assistant tab — chat with AI trading agent. Mission-check pattern.
 function AssistantTab() {
-  const [messages, setMessages] = React.useState([
-  {
-    role: 'ai',
-    type: 'greeting',
-    text: "Hi Sarah — I'm your trading agent. I keep an eye on prices and trade your surplus to earn you a bit extra. Tell me about your week and I'll plan around it, or enable smarter intelligence with the top right button.",
-    ts: '9:42am'
-  }]
-  );
+  const [messages, setMessages] = React.useState(() => {
+    const t = nowBST();
+    return [
+      {
+        role: 'ai', type: 'greeting',
+        text: "Hi Sarah — I'm your trading agent. I keep an eye on prices and trade your surplus to earn you a bit extra. Tell me about your week and I'll plan around it.",
+        ts: t,
+      },
+      {
+        role: 'ai', type: 'smart-promo',
+        text: "Or activate smart mode to connect to your calendar or mail and handle changes automatically.",
+        ts: t,
+      },
+    ];
+  });
   const [input, setInput] = React.useState('');
   const [view, setView] = React.useState('chat'); // 'chat' | 'intelligence'
   const [listening, setListening] = React.useState(false);
@@ -219,7 +229,6 @@ function AssistantTab() {
       <TabHeader
         eyebrow="Assistant"
         title="Your agent"
-        right={<SmartModeButton onClick={() => setView('intelligence')} />}
         />
       
 
@@ -229,7 +238,7 @@ function AssistantTab() {
         display: 'flex', flexDirection: 'column', gap: 10
       }}>
         {messages.map((m, i) =>
-        <ChatBubble key={i} msg={m} idx={i} onConfirm={handleConfirm} />
+        <ChatBubble key={i} msg={m} idx={i} onConfirm={handleConfirm} onSmartMode={() => setView('intelligence')} />
         )}
       </div>
 
@@ -238,18 +247,7 @@ function AssistantTab() {
         padding: '8px 16px 0',
         display: 'flex', gap: 8, flexWrap: 'wrap'
       }}>
-        {prompts.map((p) =>
-        <button key={p} onClick={() => runPrompt(p)} style={{
-          appearance: 'none', border: '1px solid var(--cream-200)',
-          background: 'var(--surface)',
-          padding: '8px 12px', borderRadius: 999,
-          fontSize: 12, color: 'var(--ink-700)', fontWeight: 500,
-          cursor: 'pointer', flexShrink: 0,
-          letterSpacing: '-0.005em'
-        }}>
-            {p}
-          </button>
-        )}
+        {prompts.map((p) => <PromptChip key={p} label={p} onClick={() => runPrompt(p)} />)}
       </div>
 
       {/* Input dock */}
@@ -320,7 +318,26 @@ function AssistantTab() {
 
 }
 
-function ChatBubble({ msg, idx, onConfirm }) {
+function PromptChip({ label, onClick }) {
+  const [hov, setHov] = React.useState(false);
+  return (
+    <button onClick={onClick}
+      onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+      style={{
+        appearance: 'none', cursor: 'pointer', flexShrink: 0,
+        border: '1px solid var(--cream-200)',
+        background: hov ? 'var(--ink-900)' : 'var(--surface)',
+        color: hov ? '#fff' : 'var(--ink-700)',
+        padding: '8px 12px', borderRadius: 999,
+        fontSize: 12, fontWeight: 500, letterSpacing: '-0.005em',
+        transition: 'background .15s, color .15s',
+        fontFamily: 'var(--font-sans)',
+      }}
+    >{label}</button>
+  );
+}
+
+function ChatBubble({ msg, idx, onConfirm, onSmartMode }) {
   if (msg.role === 'user') {
     return (
       <div style={{ display: 'flex', justifyContent: 'flex-end', paddingLeft: 40 }}>
@@ -428,16 +445,33 @@ function ChatBubble({ msg, idx, onConfirm }) {
           null}
           </div> :
 
-        <div style={{
-          background: msg.type === 'done' ? 'var(--lime-50)' : 'var(--surface)',
-          border: '1px solid ' + (msg.type === 'done' ? 'var(--lime-100)' : 'var(--cream-200)'),
-          borderRadius: '4px 18px 18px 18px',
-          padding: '10px 14px',
-          fontSize: 14, color: 'var(--ink-900)', lineHeight: 1.4,
-          letterSpacing: '-0.005em', textWrap: 'pretty'
-        }}>
+        msg.type === 'smart-promo' ? (
+          <div style={{
+            background: 'var(--surface)',
+            border: '1px solid var(--cream-200)',
+            borderRadius: '4px 18px 18px 18px',
+            padding: '10px 14px',
+          }}>
+            <div style={{
+              fontSize: 14, color: 'var(--ink-900)', lineHeight: 1.4,
+              letterSpacing: '-0.005em', textWrap: 'pretty', marginBottom: 10,
+            }}>
+              {msg.text}
+            </div>
+            <SmartModeButton onClick={onSmartMode} />
+          </div>
+        ) : (
+          <div style={{
+            background: msg.type === 'done' ? 'var(--lime-50)' : 'var(--surface)',
+            border: '1px solid ' + (msg.type === 'done' ? 'var(--lime-100)' : 'var(--cream-200)'),
+            borderRadius: '4px 18px 18px 18px',
+            padding: '10px 14px',
+            fontSize: 14, color: 'var(--ink-900)', lineHeight: 1.4,
+            letterSpacing: '-0.005em', textWrap: 'pretty'
+          }}>
             {msg.text}
           </div>
+        )
         }
         <div style={{
           fontSize: 10, color: 'var(--ink-400)', marginTop: 4,
