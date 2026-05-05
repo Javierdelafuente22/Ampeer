@@ -15,7 +15,7 @@ function SmartModeButton({ onClick }) {
         letterSpacing: '-0.01em', fontFamily: 'var(--font-sans)',
         transition: 'background .15s, color .15s, transform .15s',
         transform: hov ? 'translateY(-2px)' : 'none',
-        marginTop: 24,
+        marginTop: -3,
         animation: 'pwSmartAttention 1.6s ease-out 0.8s 1 both',
       }}
     >

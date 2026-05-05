@@ -81,7 +81,7 @@ function TabHeader({ eyebrow, title, right, subtitle }) {
 
   return (
     <div style={{
-      padding: isMobile ? '16px 24px 16px' : '58px 24px 16px',
+      padding: isMobile ? '32px 24px 16px' : '72px 24px 16px',
       background: 'var(--cream-50)',
       position: 'sticky', top: 0, zIndex: 2,
     }}>
@@ -90,11 +90,7 @@ function TabHeader({ eyebrow, title, right, subtitle }) {
         gap: 12, marginBottom: subtitle ? 4 : 0,
       }}>
         <div style={{ flex: 1, minWidth: 0 }}>
-          {eyebrow && (
-            <div className="t-label" style={{ fontSize: 12, color: 'var(--lime-600)', marginBottom: 6, fontWeight: 600 }}>
-              {eyebrow}
-            </div>
-          )}
+
           <h1 className="t-title" style={{
             fontSize: 26, lineHeight: 1.08, margin: 0,
             color: 'var(--ink-900)', fontWeight: 600, letterSpacing: '-0.025em',

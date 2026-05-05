@@ -45,7 +45,7 @@ function DashboardTab() {
             width: 40, height: 40, borderRadius: 999,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             color: 'var(--ink-700)', cursor: 'pointer', position: 'relative',
-            boxShadow: 'var(--shadow-sm)',
+            boxShadow: 'var(--shadow-sm)', marginTop: -6,
           }}>
             <IconBell size={16}/>
             <span style={{

@@ -20,7 +20,7 @@ function Screen4_Profile({ state, setState, onNext, onBack }) {
     <PwScreen step={3} onBack={onBack}>
       <PwPageTitle
         eyebrow="Step 3 of 4 — Profile"
-        title="Your details."
+        title="Check your details."
         subtitle="Tap the pencil to edit any line, or the info icon to see why we use it."
         size={32}
       />

@@ -10,7 +10,7 @@ function Screen2_Connected({ onNext, provider = 'your energy provider' }) {
   return (
     <PwScreen step={1}>
       <PwPageTitle
-        eyebrow="Step 1 of 4 — Your energy community"
+        eyebrow="Step 1 of 4 — Your smart meter"
         title="You're connected."
         subtitle={`Live readings from ${provider} are flowing into Peerway. No action needed from you.`}
         size={34}
