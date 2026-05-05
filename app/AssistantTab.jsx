@@ -47,6 +47,8 @@ function AssistantTab() {
   });
   const [input, setInput] = React.useState('');
   const [view, setView] = React.useState('chat'); // 'chat' | 'intelligence'
+  const [calEnabled, setCalEnabled] = React.useState(false);
+  const [emailEnabled, setEmailEnabled] = React.useState(false);
   const [listening, setListening] = React.useState(false);
   const recognitionRef = React.useRef(null);
   const scrollRef = React.useRef();
@@ -220,8 +222,22 @@ function AssistantTab() {
     });
   };
 
+  const handleEnable = ({ cal, email }) => {
+    const what = cal && email ? 'calendar and email' : cal ? 'calendar' : 'email';
+    setView('chat');
+    setTimeout(() => {
+      setMessages(m => [...m, {
+        role: 'ai', type: 'done',
+        text: `Smart mode on. I've connected your ${what} and will plan your trading automatically — no input needed from you.`,
+        ts: nowBST(),
+      }]);
+    }, 300);
+  };
+
   if (view === 'intelligence') {
-    return <IntelligenceScreen onBack={() => setView('chat')} />;
+    return <IntelligenceScreen onBack={() => setView('chat')} onEnable={handleEnable}
+      cal={calEnabled} onCalChange={setCalEnabled}
+      email={emailEnabled} onEmailChange={setEmailEnabled} />;
   }
 
   return (
@@ -485,9 +501,7 @@ function ChatBubble({ msg, idx, onConfirm, onSmartMode }) {
 }
 
 // Dedicated explainer screen — NOT a modal.
-function IntelligenceScreen({ onBack }) {
-  const [cal, setCal] = React.useState(false);
-  const [email, setEmail] = React.useState(false);
+function IntelligenceScreen({ onBack, onEnable, cal, onCalChange, email, onEmailChange }) {
   const anyOn = cal || email;
 
   return (
@@ -534,13 +548,13 @@ function IntelligenceScreen({ onBack }) {
           <IntelToggle
             title="Calendar"
             detail="I'll only scan for meeting events. I'll never read your meeting notes."
-            on={cal} onChange={setCal} />
-          
+            on={cal} onChange={onCalChange} />
+
           <div style={{ borderTop: '1px solid var(--cream-200)' }} />
           <IntelToggle
             title="Email"
             detail="I'll only scan for travel confirmations to manage your home while you're away."
-            on={email} onChange={setEmail} />
+            on={email} onChange={onEmailChange} />
           
         </div>
 
@@ -587,12 +601,12 @@ function IntelligenceScreen({ onBack }) {
           </ul>
         </div>
 
-        <button disabled={!anyOn} className="pw-btn pw-btn-primary" style={{
+        <button disabled={!anyOn} onClick={() => anyOn && onEnable({ cal, email })}
+          className="pw-btn pw-btn-primary" style={{
           width: '100%', height: 52,
           opacity: anyOn ? 1 : 0.4,
           cursor: anyOn ? 'pointer' : 'not-allowed'
         }}>Enable smarter intelligence
-
         </button>
         <div style={{
           fontSize: 11, color: 'var(--ink-400)', textAlign: 'center',

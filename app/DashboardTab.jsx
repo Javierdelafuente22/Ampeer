@@ -2,6 +2,7 @@
 function DashboardTab({ onNavigate }) {
   const [window, setWindow] = React.useState('week'); // 'week' | 'month' | 'year'
   const [trustOpen, setTrustOpen] = React.useState(false);
+  const [hovInsight, setHovInsight] = React.useState(false);
 
   const data = {
     week:  { saved: 8.40,  savedTrend: '+12% vs last week', co2: 14.2,  kwh: 38,  insight: '23% better than Fulham average. Chat to your assistant to climb the leaderboard' },
@@ -127,28 +128,32 @@ function DashboardTab({ onNavigate }) {
         </div>
 
         {/* Comparative badge — tappable, navigates to Assistant */}
-        <button onClick={() => onNavigate && onNavigate('assistant')} style={{
-          appearance: 'none', border: 0, cursor: 'pointer', width: '100%', textAlign: 'left',
-          padding: '10px 14px', marginBottom: 28,
-          background: 'var(--ink-900)', color: '#fff',
-          borderRadius: 'var(--r-md)',
-          display: 'flex', alignItems: 'center', gap: 10,
-          fontFamily: 'var(--font-sans)',
-        }}>
+        <button onClick={() => onNavigate && onNavigate('assistant')}
+          onMouseEnter={() => setHovInsight(true)} onMouseLeave={() => setHovInsight(false)}
+          style={{
+            appearance: 'none', border: '1px solid var(--cream-200)', cursor: 'pointer', width: '100%', textAlign: 'left',
+            padding: '10px 14px', marginBottom: 28,
+            background: hovInsight ? 'var(--ink-900)' : 'var(--surface)',
+            borderRadius: 'var(--r-md)',
+            display: 'flex', alignItems: 'center', gap: 10,
+            fontFamily: 'var(--font-sans)',
+            transition: 'background .15s, color .15s',
+          }}>
           <div style={{
             width: 28, height: 28, borderRadius: 8,
-            background: 'rgba(0,192,111,0.20)', color: 'var(--lime-400)',
+            background: hovInsight ? 'rgba(0,192,111,0.20)' : 'var(--lime-50)',
+            color: hovInsight ? 'var(--lime-400)' : 'var(--lime-600)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             flexShrink: 0,
           }}>
             <IconSparkle size={13}/>
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: 13, fontWeight: 500, color: '#fff', letterSpacing: '-0.005em' }}>
+            <div style={{ fontSize: 13, fontWeight: 500, color: hovInsight ? '#fff' : 'var(--ink-900)', letterSpacing: '-0.005em' }}>
               {data.insight}
             </div>
           </div>
-          <IconChevron size={13} style={{ color: 'rgba(255,255,255,0.45)', flexShrink: 0 }}/>
+          <IconChevron size={13} style={{ color: hovInsight ? '#fff' : 'var(--ink-400)', flexShrink: 0 }}/>
         </button>
 
         {/* Insights feed */}

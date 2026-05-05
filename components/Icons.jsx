@@ -6,10 +6,10 @@ function IconCheck({ size = 20 }) {
     <svg width={size} height={size} viewBox="0 0 20 20"><path {...PW_STROKE} d="M4.5 10.5l3.5 3.5L15.5 6.5"/></svg>
   );
 }
-function IconChevron({ size = 16, dir = 'right' }) {
+function IconChevron({ size = 16, dir = 'right', style }) {
   const rot = { right: 0, left: 180, down: 90, up: -90 }[dir];
   return (
-    <svg width={size} height={size} viewBox="0 0 16 16" style={{ transform: `rotate(${rot}deg)` }}>
+    <svg width={size} height={size} viewBox="0 0 16 16" style={{ transform: `rotate(${rot}deg)`, ...style }}>
       <path {...PW_STROKE} d="M6 3l5 5-5 5"/>
     </svg>
   );

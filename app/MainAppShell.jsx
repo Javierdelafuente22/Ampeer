@@ -22,11 +22,19 @@ function MainAppShell() {
       case 'home':      return <HouseTab onNavigate={handleNavigate} highlight={homeHighlight} onClearHighlight={() => setHomeHighlight(false)}/>;
       case 'community': return <CommunityTab highlight={communityHighlight} onClearHighlight={() => setCommunityHighlight(false)}/>;
       case 'dashboard': return <DashboardTab onNavigate={handleNavigate}/>;
-      case 'assistant': return <AssistantTab/>;
       case 'profile':   return <ProfileTab/>;
       default:          return <DashboardTab/>;
     }
   };
+
+  // AssistantTab is always mounted to preserve conversation + toggle state.
+  // It is shown/hidden via display rather than remounted on tab switch.
+  const assistantLayer = (style) => (
+    <div style={{ position: 'absolute', inset: 0, display: tab === 'assistant' ? 'flex' : 'none', flexDirection: 'column', ...style }}>
+      <AssistantTab/>
+      <TabBar active={tab} onChange={setTab}/>
+    </div>
+  );
 
   if (isMobile) {
     return (
@@ -34,14 +42,15 @@ function MainAppShell() {
         position: 'fixed',
         top: 0, left: 0, right: 0, bottom: 0,
         background: 'var(--cream-50, #F4F5F2)',
-        display: 'flex',
-        flexDirection: 'column',
         overflow: 'hidden',
       }}>
-        <div key={tab} style={{ flex: 1, position: 'relative', overflow: 'hidden' }} className="pw-fade-in">
-          {renderTab()}
-          <TabBar active={tab} onChange={setTab}/>
-        </div>
+        {assistantLayer({})}
+        {tab !== 'assistant' && (
+          <div key={tab} style={{ position: 'absolute', inset: 0 }} className="pw-fade-in">
+            {renderTab()}
+            <TabBar active={tab} onChange={setTab}/>
+          </div>
+        )}
       </div>
     );
   }
@@ -53,9 +62,14 @@ function MainAppShell() {
       padding: '20px', boxSizing: 'border-box',
     }}>
       <IOSDevice width={390} height={844}>
-        <div key={tab} style={{ height: '100%', position: 'relative' }} className="pw-fade-in">
-          {renderTab()}
-          <TabBar active={tab} onChange={setTab}/>
+        <div style={{ height: '100%', position: 'relative' }}>
+          {assistantLayer({})}
+          {tab !== 'assistant' && (
+            <div key={tab} style={{ height: '100%', position: 'relative' }} className="pw-fade-in">
+              {renderTab()}
+              <TabBar active={tab} onChange={setTab}/>
+            </div>
+          )}
         </div>
       </IOSDevice>
     </div>

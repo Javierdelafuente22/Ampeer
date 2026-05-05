@@ -4,6 +4,8 @@ const WEEK_SAVED = 8.40; // shared with Dashboard week figure
 function HouseTab({ onNavigate, highlight, onClearHighlight }) {
   const [tick, setTick] = React.useState(0);
   const [glowing, setGlowing] = React.useState(false);
+  const [hovBanner, setHovBanner] = React.useState(false);
+  const [hovSavings, setHovSavings] = React.useState(false);
 
   React.useEffect(() => {
     let raf;
@@ -60,17 +62,21 @@ function HouseTab({ onNavigate, highlight, onClearHighlight }) {
 
         {/* Insight — tappable, navigates to Community */}
         <div style={{ padding: '20px 24px 0' }}>
-          <button onClick={() => onNavigate && onNavigate('community', true)} style={{
-            appearance: 'none', border: 0, cursor: 'pointer', width: '100%', textAlign: 'left',
-            padding: '10px 14px',
-            background: 'var(--ink-900)', color: '#fff',
-            borderRadius: 'var(--r-md)',
-            display: 'flex', alignItems: 'center', gap: 10,
-            fontFamily: 'var(--font-sans)',
-          }}>
+          <button onClick={() => onNavigate && onNavigate('community', true)}
+            onMouseEnter={() => setHovBanner(true)} onMouseLeave={() => setHovBanner(false)}
+            style={{
+              appearance: 'none', border: '1px solid var(--cream-200)', cursor: 'pointer', width: '100%', textAlign: 'left',
+              padding: '10px 14px',
+              background: hovBanner ? 'var(--ink-900)' : 'var(--surface)',
+              borderRadius: 'var(--r-md)',
+              display: 'flex', alignItems: 'center', gap: 10,
+              fontFamily: 'var(--font-sans)',
+              transition: 'background .15s, color .15s',
+            }}>
             <div style={{
               width: 28, height: 28, borderRadius: 8,
-              background: 'rgba(0,192,111,0.20)', color: 'var(--lime-400)',
+              background: hovBanner ? 'rgba(0,192,111,0.20)' : 'var(--lime-50)',
+              color: hovBanner ? 'var(--lime-400)' : 'var(--lime-600)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               flexShrink: 0,
             }}>
@@ -79,18 +85,18 @@ function HouseTab({ onNavigate, highlight, onClearHighlight }) {
             <div style={{
               flex: 1,
               fontSize: 13, fontWeight: 500,
-              color: '#fff', letterSpacing: '-0.005em',
+              color: hovBanner ? '#fff' : 'var(--ink-900)', letterSpacing: '-0.005em',
               textWrap: 'pretty',
             }}>
               {scene.caption}
             </div>
-            <IconChevron size={13} style={{ color: 'rgba(255,255,255,0.45)', flexShrink: 0 }}/>
+            <IconChevron size={13} style={{ color: hovBanner ? '#fff' : 'var(--ink-400)', flexShrink: 0 }}/>
           </button>
         </div>
 
         {/* Live readouts */}
         <div style={{ padding: '20px 24px 0' }}>
-          <div className="t-label" style={{ color: 'var(--ink-500)', marginBottom: 12, fontSize: 13 }}>
+          <div className="t-label" style={{ color: 'var(--ink-500)', marginBottom: 10, fontSize: 13 }}>
             Live readouts
           </div>
           <div style={{
@@ -104,17 +110,21 @@ function HouseTab({ onNavigate, highlight, onClearHighlight }) {
 
         {/* Savings card */}
         <div style={{ padding: '12px 24px 0' }}>
-          <button onClick={() => onNavigate && onNavigate('dashboard')} style={{
-            appearance: 'none', border: 0, cursor: 'pointer', width: '100%', textAlign: 'left',
-            padding: '10px 14px',
-            background: 'var(--ink-900)', color: '#fff',
-            borderRadius: 'var(--r-md)',
-            display: 'flex', alignItems: 'center', gap: 10,
-            fontFamily: 'var(--font-sans)',
-          }}>
+          <button onClick={() => onNavigate && onNavigate('dashboard')}
+            onMouseEnter={() => setHovSavings(true)} onMouseLeave={() => setHovSavings(false)}
+            style={{
+              appearance: 'none', border: '1px solid var(--cream-200)', cursor: 'pointer', width: '100%', textAlign: 'left',
+              padding: '10px 14px',
+              background: hovSavings ? 'var(--ink-900)' : 'var(--surface)',
+              borderRadius: 'var(--r-md)',
+              display: 'flex', alignItems: 'center', gap: 10,
+              fontFamily: 'var(--font-sans)',
+              transition: 'background .15s, color .15s',
+            }}>
             <div style={{
               width: 28, height: 28, borderRadius: 8,
-              background: 'rgba(0,192,111,0.20)', color: 'var(--lime-400)',
+              background: hovSavings ? 'rgba(0,192,111,0.20)' : 'var(--lime-50)',
+              color: hovSavings ? 'var(--lime-400)' : 'var(--lime-600)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               flexShrink: 0, fontSize: 13, fontWeight: 700,
               fontFamily: 'var(--font-sans)',
@@ -123,11 +133,11 @@ function HouseTab({ onNavigate, highlight, onClearHighlight }) {
             </div>
             <span style={{
               flex: 1, fontSize: 13, fontWeight: 500,
-              color: '#fff', letterSpacing: '-0.005em',
+              color: hovSavings ? '#fff' : 'var(--ink-900)', letterSpacing: '-0.005em',
             }}>
               £{WEEK_SAVED.toFixed(2)} saved this week
             </span>
-            <IconChevron size={13} style={{ color: 'rgba(255,255,255,0.45)', flexShrink: 0 }}/>
+            <IconChevron size={13} style={{ color: hovSavings ? '#fff' : 'var(--ink-400)', flexShrink: 0 }}/>
           </button>
         </div>
       </div>

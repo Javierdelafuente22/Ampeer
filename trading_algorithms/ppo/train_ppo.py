@@ -262,7 +262,7 @@ def train(args):
     print(f"Episode log saved: {n_train} train + {n_eval} eval = {len(episode_df)} total")
     
     # Generate plots from the CSV (uses plot_training.py)
-    from plot_training import plot_lines, plot_shaded_both, plot_shaded_test_only
+    from plotting.plot_training import plot_lines, plot_shaded_both, plot_shaded_test_only
     plot_lines(episode_df, os.path.join(args.output_dir, 'plot1_lines.png'))
     plot_shaded_both(episode_df, os.path.join(args.output_dir, 'plot2_shaded_both.png'))
     plot_shaded_test_only(episode_df, os.path.join(args.output_dir, 'plot3_shaded_test.png'))

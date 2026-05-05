@@ -31,7 +31,7 @@ from rl_env.orderbook_clearing import clear_market_for_agent
 from rl_env.p2p_energy_env import MAX_RATE, TARGET_AGENT, OTHER_AGENTS, MARKET_FEATURES
 from utils.data_loader import load_and_split, print_split_info
 from utils.evaluation import run_evaluation_pipeline
-from plot_training import plot_lines, plot_shaded_both, plot_shaded_test_only
+from plotting.plot_training import plot_lines, plot_shaded_both, plot_shaded_test_only
 
 
 # ============================================================
