@@ -22,8 +22,8 @@ function Screen3_Savings({ state, onNext, onBack }) {
   return (
     <PwScreen step={2} onBack={onBack}>
       <PwPageTitle
-        eyebrow="Step 2 — Your numbers"
-        title="You could save this much."
+        eyebrow="Step 2 of 4 — Your numbers"
+        title="You could save..."
         subtitle={`Estimated range per year for homes like yours in ${state.area || 'Fulham'}. Range reflects weather, price and consumption variability.`}
         size={32}
       />
@@ -70,7 +70,7 @@ function Screen3_Savings({ state, onNext, onBack }) {
           </div>
 
           {[
-            { label: 'Standard tariff', value: 1640, color: 'var(--cream-200)', highlight: false },
+            { label: 'Standard grid tariff', value: 1640, color: 'var(--cream-200)', highlight: false },
             { label: 'With Peerway',    value: 1250, color: 'var(--lime-500)', highlight: true, savings: 'save £390' },
           ].map((row, i) => {
             const max = 1640;
@@ -163,7 +163,7 @@ function Screen3_Savings({ state, onNext, onBack }) {
               <span style={{ color: 'var(--ink-600)' }}>Avg. household consumption</span>
               <span className="t-num" style={{ color: 'var(--ink-900)' }}>9300 kWh</span>
               <span style={{ color: 'var(--ink-600)' }}>Avg. import price </span>
-              <span className="t-num" style={{ color: 'var(--lime-600)', fontWeight: 600 }}>+17.6p / kWh</span>
+              <span className="t-num" style={{ color: 'var(--lime-600)', fontWeight: 600 }}>17.6p / kWh</span>
               <span style={{ color: 'var(--ink-600)' }}>Peerway's avg. savings</span>
               <span className="t-num" style={{ color: 'var(--lime-600)', fontWeight: 600 }}>24%</span>
             </div>

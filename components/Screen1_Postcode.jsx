@@ -15,19 +15,16 @@ function Screen1_Postcode({ state, setState, onNext }) {
 
   return (
     <PwScreen step={0}>
-      <div style={{ marginTop: 8, marginBottom: 8 }}>
-        <PeerwayLogo size={18}/>
-      </div>
-
+      <div style={{ marginBottom: 78 }}/>
       <PwPageTitle
-        eyebrow="Step 1 — Your energy community"
+        eyebrow=""
         title="Welcome to Peerway, Sarah."
         subtitle="You have been securely redirected from your Octopus online account. You are a few steps away from sharing energy with your neighbours."
         size={34}
       />
 
       {/* Pre-filled postcode confirmation card */}
-      <div style={{ marginTop: 8 }}>
+      <div style={{ marginTop: 36 }}>
           <div style={{
             background: 'var(--lime-50)',
             border: '1px solid var(--lime-100)',
@@ -57,7 +54,7 @@ function Screen1_Postcode({ state, setState, onNext }) {
       </div>
 
       {/* What is peer trading? expandable */}
-      <div style={{ marginTop: 20 }}>
+      <div style={{ marginTop: 30 }}>
         <button onClick={() => setPeerInfoOpen(o => !o)} style={{
           appearance: 'none', background: 'transparent', border: 0, padding: 0,
           display: 'inline-flex', alignItems: 'center', gap: 6,
@@ -124,8 +121,8 @@ function Screen1_Postcode({ state, setState, onNext }) {
           margin: '14px 4px 0', fontSize: 12, lineHeight: 1.5,
           color: 'var(--ink-400)', display: 'flex', alignItems: 'center', gap: 6,
         }}>
-          <IconLock size={12}/>
-          We use read-only access via your approved provider.
+          {/*<IconLock size={12}/>
+          We use read-only access via your approved provider.*/}
         </p>
       </div>
     </PwScreen>

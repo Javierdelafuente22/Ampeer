@@ -20,7 +20,7 @@ function HouseTab() {
 
   return (
     <div className="pw-screen">
-      <TabHeader eyebrow="Your house" title="Status"/>
+      <TabHeader eyebrow="Home" title="Status"/>
 
       <div style={{ padding: '0 0 90px' }}>
         {/* Visualization canvas */}

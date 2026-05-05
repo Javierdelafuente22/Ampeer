@@ -114,7 +114,7 @@ function PwPageTitle({ eyebrow, title, subtitle, size = 32 }) {
       {subtitle && (
         <p className="t-body" style={{
           fontSize: 15, lineHeight: 1.45, color: 'var(--ink-600)', margin: 0,
-          maxWidth: 320,
+          maxWidth: 340,
         }}>
           {subtitle}
         </p>

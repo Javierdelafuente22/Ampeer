@@ -19,7 +19,7 @@ function Screen4_Profile({ state, setState, onNext, onBack }) {
   return (
     <PwScreen step={3} onBack={onBack}>
       <PwPageTitle
-        eyebrow="Step 3 — Profile"
+        eyebrow="Step 3 of 4 — Profile"
         title="Your details."
         subtitle="Tap the pencil to edit any line, or the info icon to see why we use it."
         size={32}
@@ -125,7 +125,7 @@ function Screen4_Profile({ state, setState, onNext, onBack }) {
           <IconLock size={14}/>
         </div>
         <div>
-          This stays on your device. We only use it to optimise your trading.
+          Data stays on device, and is only used to optimise trading.
         </div>
       </div>
 
