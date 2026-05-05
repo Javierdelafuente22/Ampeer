@@ -28,6 +28,7 @@ function DashboardTab({ onNavigate }) {
 
   const scrollRef = React.useRef();
   const momentsRef = React.useRef();
+  const trustRef = React.useRef();
   const scrollToMoments = () => {
     if (scrollRef.current && momentsRef.current) {
       const stickyHeader = scrollRef.current.querySelector('[style*="sticky"]');
@@ -38,6 +39,14 @@ function DashboardTab({ onNavigate }) {
       scrollRef.current.scrollTo({ top: target, behavior: 'smooth' });
     }
   };
+
+  React.useEffect(() => {
+    if (!trustOpen || !scrollRef.current) return;
+    // Wait one frame for the expanded panel to render, then scroll to bottom
+    requestAnimationFrame(() => {
+      scrollRef.current.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
+    });
+  }, [trustOpen]);
 
   return (
     <div className="pw-screen" ref={scrollRef}>
@@ -176,6 +185,21 @@ function DashboardTab({ onNavigate }) {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <InsightCard
+            day="Sun"
+            icon={<IconDoc size={20}/>}
+            title="Your weekly report is ready!"
+            detail="Tap to download your PDF summary"
+            accent="lime"
+            onClick={() => {
+              const a = document.createElement('a');
+              a.href = 'app/peerway_weekly_report.pdf';
+              a.download = 'peerway_weekly_report.pdf';
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+            }}
+          />
+          <InsightCard
             day="Thu"
             icon="☀️"
             title="Your solar powered the kettles at St. Mary's Primary this morning"
@@ -203,25 +227,10 @@ function DashboardTab({ onNavigate }) {
             detail="We took advantage of a cheap rate window"
             accent="neutral"
           />
-          <InsightCard
-            day="Sun"
-            icon={<IconDoc size={20}/>}
-            title="Your weekly report is ready!"
-            detail="Tap to download your PDF summary"
-            accent="lime"
-            onClick={() => {
-              const a = document.createElement('a');
-              a.href = 'app/peerway_weekly_report.pdf';
-              a.download = 'peerway_weekly_report.pdf';
-              document.body.appendChild(a);
-              a.click();
-              document.body.removeChild(a);
-            }}
-          />
         </div>
 
         {/* Footer trust anchor — expandable */}
-        <div style={{ marginTop: 24 }}>
+        <div ref={trustRef} style={{ marginTop: 24 }}>
           <button onClick={() => setTrustOpen(o => !o)} style={{
             appearance: 'none', border: '1px solid var(--cream-200)',
             background: 'var(--surface)',
@@ -254,7 +263,7 @@ function DashboardTab({ onNavigate }) {
               borderRadius: '0 0 var(--r-md) var(--r-md)',
               fontSize: 13, lineHeight: 1.55, color: 'var(--ink-600)',
             }}>
-              Trading with peers means <span style={{ fontWeight: 600, color: 'var(--ink-900)' }}>you buy for less and sell for more</span>. For example, instead of buying electricity at 20p per kWh and selling for 10p, peers trade at 15p. Here, buyers save 5p and sellers make 5p more per kWh versus a standard grid tariff.
+              Trading with peers means <span style={{ fontWeight: 600, color: 'var(--ink-900)' }}>you buy for less and sell for more</span>. For example, instead of buying electricity at 20p per kWh and selling for 10p, peers trade at 15p. In this case, buyers save 5p and sellers make 5p more per kWh versus a standard grid tariff.
             </div>
           )}
         </div>
