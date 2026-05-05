@@ -375,7 +375,7 @@ function ChatBubble({ msg, idx, onConfirm }) {
                 background: 'var(--ink-900)', color: '#fff',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: 10, fontWeight: 600,
-                flexShrink: 0, fontFamily: 'var(--font-mono)'
+                flexShrink: 0, fontFamily: 'var(--font-sans)'
               }}>
                     {i + 1}
                   </div>
@@ -420,7 +420,7 @@ function ChatBubble({ msg, idx, onConfirm }) {
             padding: '6px 10px', borderRadius: 8,
             background: 'var(--lime-50)', color: 'var(--lime-600)',
             fontSize: 11, fontWeight: 600, letterSpacing: '0.02em',
-            fontFamily: 'var(--font-mono)', textTransform: 'uppercase',
+            fontFamily: 'var(--font-sans)', textTransform: 'uppercase',
             display: 'inline-flex', alignItems: 'center', gap: 6
           }}>
                 <IconCheck size={12} /> CONFIRMED

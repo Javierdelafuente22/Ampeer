@@ -69,7 +69,7 @@ function PeerwayMainApp() {
         <div style={{
           marginTop: 16, textAlign: 'center',
           fontSize: 11, color: 'rgba(26,26,23,0.55)',
-          fontFamily: 'var(--font-mono)', letterSpacing: '0.05em',
+          fontFamily: 'var(--font-sans)', letterSpacing: '0.05em',
         }}>
           MAIN APP · {tab.toUpperCase()} TAB
         </div>
@@ -134,7 +134,7 @@ function AppLeftRail({ active }) {
               color: active === t.id ? 'var(--ink-900)' : 'var(--ink-400)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               flexShrink: 0, marginTop: 1,
-              fontSize: 10, fontFamily: 'var(--font-mono)', fontWeight: 600,
+              fontSize: 10, fontFamily: 'var(--font-sans)', fontWeight: 600,
             }}>
               {tabs.findIndex(x => x.id === t.id) + 1}
             </div>
@@ -283,9 +283,9 @@ function TweakSection({ label, children }) {
   return (
     <div style={{ marginBottom: 12 }}>
       <div style={{
-        fontSize: 10, fontFamily: 'var(--font-mono)',
+        fontSize: 10, fontFamily: 'var(--font-sans)',
         color: 'var(--ink-400)', textTransform: 'uppercase',
-        letterSpacing: '0.06em', marginBottom: 6,
+        letterSpacing: '0.03em', marginBottom: 6,
       }}>
         {label}
       </div>

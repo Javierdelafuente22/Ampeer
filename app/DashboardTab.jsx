@@ -82,7 +82,7 @@ function DashboardTab() {
 
         {/* Hero — money saved */}
         <div style={{ marginBottom: 28 }}>
-          <div className="t-label" style={{ color: 'var(--ink-500)', marginBottom: 10 }}>
+          <div className="t-label" style={{ color: 'var(--ink-500)', marginBottom: 10, fontSize: 13 }}>
             Saved this {window}
           </div>
           <div style={{
@@ -154,10 +154,10 @@ function DashboardTab() {
           marginBottom: 12,
           scrollMarginTop: 80,
         }}>
-          <div className="t-label" style={{ color: 'var(--ink-500)' }}>
+          <div className="t-label" style={{ color: 'var(--ink-500)', fontSize: 13 }}>
             This week's moments
           </div>
-          <span className="t-mono" style={{ color: 'var(--ink-400)', fontSize: 11 }}>
+          <span style={{ fontSize: 11, color: 'var(--ink-400)', fontFamily: 'var(--font-sans)', fontWeight: 500 }}>
             4 new
           </span>
         </div>
@@ -249,7 +249,7 @@ function MetricCard({ icon, label, value, unit }) {
         color: 'var(--ink-400)', marginBottom: 8,
       }}>
         {icon}
-        <span className="t-label">{label}</span>
+        <span className="t-label" style={{ fontSize: 11 }}>{label}</span>
       </div>
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
         <span className="t-num" style={{

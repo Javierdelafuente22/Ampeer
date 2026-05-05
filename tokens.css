@@ -56,7 +56,7 @@
   /* Type — Geist Sans (modern fintech) + tabular Geist Mono for numbers */
   --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: "Geist", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-mono: "Geist", ui-sans-serif, system-ui, sans-serif;
   --font-label: "Inter", "Geist", ui-sans-serif, system-ui, sans-serif;
 }
 

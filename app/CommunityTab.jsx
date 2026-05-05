@@ -42,7 +42,7 @@ function CommunityTab() {
             WebkitBackdropFilter: 'blur(6px)',
             borderRadius: 10,
             display: 'flex', flexDirection: 'column', gap: 4,
-            fontSize: 10, fontFamily: 'var(--font-mono)',
+            fontSize: 10, fontFamily: 'var(--font-sans)',
             color: 'var(--ink-700)', letterSpacing: '0.02em'
           }}>
             <LegendItem color="var(--lime-500)" label="YOU" />
@@ -55,13 +55,13 @@ function CommunityTab() {
             position: 'absolute', top: 14, right: 14,
             padding: '6px 10px', background: 'var(--ink-900)', color: '#fff',
             borderRadius: 999, display: 'flex', alignItems: 'center', gap: 6,
-            fontSize: 11, fontFamily: 'var(--font-mono)', letterSpacing: '0.02em'
+            fontSize: 11, fontFamily: 'var(--font-sans)', letterSpacing: '0.02em'
           }}>
             <span style={{
               width: 6, height: 6, borderRadius: 999, background: 'var(--lime-400)',
               animation: 'pwPulse 1.4s ease-in-out infinite'
             }} />
-            <span>LIVE · 7 TRADES/MIN</span>
+            <span>LIVE  ·  7 TRADES / MIN</span>
           </div>
         </div>
 
@@ -112,9 +112,9 @@ function CommunityTab() {
           <div style={{
             display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10
           }}>
-            <BreakdownTile n="3" label="Homes" emoji="🏠" />
-            <BreakdownTile n="1" label="School" emoji="🎓" />
-            <BreakdownTile n="2" label="Shops" emoji="🛍" />
+            <BreakdownTile n="3" label="Homes" type="home" />
+            <BreakdownTile n="1" label="School" type="school" />
+            <BreakdownTile n="2" label="Shops" type="shop" />
           </div>
         </div>
 
@@ -133,7 +133,7 @@ function CommunityTab() {
               <span className="t-label" style={{ color: 'var(--ink-400)', fontSize: 12 }}>
                 Community composition
               </span>
-              <span style={{ fontSize: 11, color: 'var(--ink-600)', fontFamily: 'var(--font-mono)' }}>
+              <span style={{ fontSize: 11, color: 'var(--ink-600)', fontFamily: 'var(--font-sans)' }}>
                 47 members
               </span>
             </div>
@@ -199,7 +199,31 @@ function LegendItem({ color, label }) {
 
 }
 
-function BreakdownTile({ n, label, emoji }) {
+function BreakdownTile({ n, label, type }) {
+  const icon = {
+    home: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="var(--ink-700)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+        style={{ display: 'block', margin: '0 auto 6px' }}>
+        <path d="M5 9.77746V16.2C5 17.8802 5 18.7203 5.32698 19.362C5.6146 19.9265 6.07354 20.3854 6.63803 20.673C7.27976 21 8.11984 21 9.8 21H14.2C15.8802 21 16.7202 21 17.362 20.673C17.9265 20.3854 18.3854 19.9265 18.673 19.362C19 18.7203 19 17.8802 19 16.2V5.00002M21 12L15.5668 5.96399C14.3311 4.59122 13.7133 3.90484 12.9856 3.65144C12.3466 3.42888 11.651 3.42893 11.0119 3.65159C10.2843 3.90509 9.66661 4.59157 8.43114 5.96452L3 12M14 21V15H10V21"/>
+      </svg>
+    ),
+    shop: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="var(--ink-700)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+        style={{ display: 'block', margin: '0 auto 6px' }}>
+        <path d="M21 18L20.1703 11.7771C20.0391 10.7932 19.9735 10.3012 19.7392 9.93082C19.5327 9.60444 19.2362 9.34481 18.8854 9.1833C18.4873 9 17.991 9 16.9983 9H7.00165C6.00904 9 5.51274 9 5.11461 9.1833C4.76381 9.34481 4.46727 9.60444 4.26081 9.93082C4.0265 10.3012 3.96091 10.7932 3.82972 11.7771L3 18M21 18H3M21 18V19.4C21 19.9601 21 20.2401 20.891 20.454C20.7951 20.6422 20.6422 20.7951 20.454 20.891C20.2401 21 19.9601 21 19.4 21H4.6C4.03995 21 3.75992 21 3.54601 20.891C3.35785 20.7951 3.20487 20.6422 3.10899 20.454C3 20.2401 3 19.9601 3 19.4V18M7.5 12V12.01M10.5 12V12.01M9 15V15.01M12 15V15.01M15 15V15.01M13.5 12V12.01M16.5 12V12.01M9 9V6M5.8 6H12.2C12.48 6 12.62 6 12.727 5.9455C12.8211 5.89757 12.8976 5.82108 12.9455 5.727C13 5.62004 13 5.48003 13 5.2V3.8C13 3.51997 13 3.37996 12.9455 3.273C12.8976 3.17892 12.8211 3.10243 12.727 3.0545C12.62 3 12.48 3 12.2 3H5.8C5.51997 3 5.37996 3 5.273 3.0545C5.17892 3.10243 5.10243 3.17892 5.0545 3.273C5 3.37996 5 3.51997 5 3.8V5.2C5 5.48003 5 5.62004 5.0545 5.727C5.10243 5.82108 5.17892 5.89757 5.273 5.9455C5.37996 6 5.51997 6 5.8 6Z"/>
+      </svg>
+    ),
+    school: (
+      <svg width="24" height="24" viewBox="0 0 512 512" fill="var(--ink-700)"
+        style={{ display: 'block', margin: '0 auto 6px' }}>
+        <path d="M505.837,180.418L279.265,76.124c-7.349-3.385-15.177-5.093-23.265-5.093c-8.088,0-15.914,1.708-23.265,5.093L6.163,180.418C2.418,182.149,0,185.922,0,190.045s2.418,7.896,6.163,9.627l226.572,104.294c7.349,3.385,15.177,5.101,23.265,5.101c8.088,0,15.916-1.716,23.267-5.101l178.812-82.306v82.881c-7.096,0.8-12.63,6.84-12.63,14.138c0,6.359,4.208,11.864,10.206,13.618l-12.092,79.791h55.676l-12.09-79.791c5.996-1.754,10.204-7.259,10.204-13.618c0-7.298-5.534-13.338-12.63-14.138v-95.148l21.116-9.721c3.744-1.731,6.163-5.504,6.163-9.627S509.582,182.149,505.837,180.418z"/>
+        <path d="M256,346.831c-11.246,0-22.143-2.391-32.386-7.104L112.793,288.71v101.638c0,22.314,67.426,50.621,143.207,50.621c75.782,0,143.209-28.308,143.209-50.621V288.71l-110.827,51.017C278.145,344.44,267.25,346.831,256,346.831z"/>
+      </svg>
+    ),
+  }[type];
+
   return (
     <div style={{
       padding: 12,
@@ -208,7 +232,7 @@ function BreakdownTile({ n, label, emoji }) {
       borderRadius: 'var(--r-md)',
       textAlign: 'center'
     }}>
-      <div style={{ fontSize: 20, marginBottom: 4 }}>{emoji}</div>
+      {icon}
       <div className="t-num" style={{
         fontSize: 22, color: 'var(--ink-900)', fontWeight: 600,
         letterSpacing: '-0.03em', lineHeight: 1
@@ -312,8 +336,8 @@ function CommunityMap({ tick }) {
       <g transform={`translate(${YOU_NODE.x}, ${YOU_NODE.y})`}>
         <circle r={30 + Math.sin(tick * 2) * 2} fill="url(#youGlow)" />
         <circle r="19" fill="var(--lime-500)" stroke="#fff" strokeWidth="2" />
-        <text x="0" y="4" textAnchor="middle" fontSize="10" fontFamily="Geist Mono, monospace"
-        fill="var(--ink-900)" fontWeight="700" letterSpacing="0.05em">
+        <text x="0" y="4" textAnchor="middle" fontSize="10" fontFamily="Inter, Geist, sans-serif"
+        fill="var(--ink-900)" fontWeight="700" letterSpacing="0.03em">
           YOU
         </text>
       </g>
@@ -322,12 +346,32 @@ function CommunityMap({ tick }) {
 }
 
 function PeerNode({ x, y, type, pulse }) {
-  const emoji = { home: '🏠', shop: '🛍', school: '🎓' }[type];
+  const icon = {
+    home: (
+      <svg x="-9" y="-9" width="18" height="18" viewBox="0 0 24 24" fill="none"
+        stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M5 9.77746V16.2C5 17.8802 5 18.7203 5.32698 19.362C5.6146 19.9265 6.07354 20.3854 6.63803 20.673C7.27976 21 8.11984 21 9.8 21H14.2C15.8802 21 16.7202 21 17.362 20.673C17.9265 20.3854 18.3854 19.9265 18.673 19.362C19 18.7203 19 17.8802 19 16.2V5.00002M21 12L15.5668 5.96399C14.3311 4.59122 13.7133 3.90484 12.9856 3.65144C12.3466 3.42888 11.651 3.42893 11.0119 3.65159C10.2843 3.90509 9.66661 4.59157 8.43114 5.96452L3 12M14 21V15H10V21"/>
+      </svg>
+    ),
+    shop: (
+      <svg x="-9" y="-9" width="18" height="18" viewBox="0 0 24 24" fill="none"
+        stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 18L20.1703 11.7771C20.0391 10.7932 19.9735 10.3012 19.7392 9.93082C19.5327 9.60444 19.2362 9.34481 18.8854 9.1833C18.4873 9 17.991 9 16.9983 9H7.00165C6.00904 9 5.51274 9 5.11461 9.1833C4.76381 9.34481 4.46727 9.60444 4.26081 9.93082C4.0265 10.3012 3.96091 10.7932 3.82972 11.7771L3 18M21 18H3M21 18V19.4C21 19.9601 21 20.2401 20.891 20.454C20.7951 20.6422 20.6422 20.7951 20.454 20.891C20.2401 21 19.9601 21 19.4 21H4.6C4.03995 21 3.75992 21 3.54601 20.891C3.35785 20.7951 3.20487 20.6422 3.10899 20.454C3 20.2401 3 19.9601 3 19.4V18M7.5 12V12.01M10.5 12V12.01M9 15V15.01M12 15V15.01M15 15V15.01M13.5 12V12.01M16.5 12V12.01M9 9V6M5.8 6H12.2C12.48 6 12.62 6 12.727 5.9455C12.8211 5.89757 12.8976 5.82108 12.9455 5.727C13 5.62004 13 5.48003 13 5.2V3.8C13 3.51997 13 3.37996 12.9455 3.273C12.8976 3.17892 12.8211 3.10243 12.727 3.0545C12.62 3 12.48 3 12.2 3H5.8C5.51997 3 5.37996 3 5.273 3.0545C5.17892 3.10243 5.10243 3.17892 5.0545 3.273C5 3.37996 5 3.51997 5 3.8V5.2C5 5.48003 5 5.62004 5.0545 5.727C5.10243 5.82108 5.17892 5.89757 5.273 5.9455C5.37996 6 5.51997 6 5.8 6Z"/>
+      </svg>
+    ),
+    school: (
+      <svg x="-9" y="-9" width="18" height="18" viewBox="0 0 512 512" fill="#fff">
+        <path d="M505.837,180.418L279.265,76.124c-7.349-3.385-15.177-5.093-23.265-5.093c-8.088,0-15.914,1.708-23.265,5.093L6.163,180.418C2.418,182.149,0,185.922,0,190.045s2.418,7.896,6.163,9.627l226.572,104.294c7.349,3.385,15.177,5.101,23.265,5.101c8.088,0,15.916-1.716,23.267-5.101l178.812-82.306v82.881c-7.096,0.8-12.63,6.84-12.63,14.138c0,6.359,4.208,11.864,10.206,13.618l-12.092,79.791h55.676l-12.09-79.791c5.996-1.754,10.204-7.259,10.204-13.618c0-7.298-5.534-13.338-12.63-14.138v-95.148l21.116-9.721c3.744-1.731,6.163-5.504,6.163-9.627S509.582,182.149,505.837,180.418z"/>
+        <path d="M256,346.831c-11.246,0-22.143-2.391-32.386-7.104L112.793,288.71v101.638c0,22.314,67.426,50.621,143.207,50.621c75.782,0,143.209-28.308,143.209-50.621V288.71l-110.827,51.017C278.145,344.44,267.25,346.831,256,346.831z"/>
+      </svg>
+    ),
+  }[type];
+
   return (
     <g transform={`translate(${x}, ${y})`}>
       <circle r="16" fill="var(--ink-900)" opacity={0.9} />
       <circle r="16" fill="none" stroke="var(--lime-400)" strokeWidth="1" opacity={pulse * 0.5} />
-      <text x="0" y="5" textAnchor="middle" fontSize="15">{emoji}</text>
+      {icon}
     </g>);
 
 }

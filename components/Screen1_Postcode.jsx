@@ -60,7 +60,7 @@ function Screen1_Postcode({ state, setState, onNext }) {
           display: 'inline-flex', alignItems: 'center', gap: 6,
           color: 'var(--ink-700)', fontSize: 14, fontFamily: 'var(--font-sans)',
           fontWeight: 500, cursor: 'pointer',
-          borderBottom: '1px dashed var(--ink-400)', paddingBottom: 2,
+          paddingBottom: 2,
         }}>
           <span>What is peer trading?</span>
           <div style={{

@@ -66,7 +66,7 @@ function Screen3_Savings({ state, onNext, onBack }) {
             marginBottom: 10,
           }}>
             <span className="t-label" style={{ color: 'var(--ink-500)' }}>Comparison</span>
-            <span className="t-mono" style={{ color: 'var(--ink-400)' }}>£/year</span>
+            <span style={{ fontSize: 11, color: 'var(--ink-400)', fontFamily: 'var(--font-sans)', fontWeight: 500 }}>£/year</span>
           </div>
 
           {[

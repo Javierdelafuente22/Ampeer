@@ -64,7 +64,7 @@ function HouseTab() {
 
         {/* Live readouts */}
         <div style={{ padding: '20px 24px 0' }}>
-          <div className="t-label" style={{ color: 'var(--ink-500)', marginBottom: 12 }}>
+          <div className="t-label" style={{ color: 'var(--ink-500)', marginBottom: 12, fontSize: 13 }}>
             Live readouts
           </div>
           <div style={{
@@ -100,7 +100,7 @@ function Readout({ icon, label, value, unit, accent }) {
           fontSize: 19, color: 'var(--ink-900)', fontWeight: 600,
           letterSpacing: '-0.03em',
         }}>{value}</span>
-        <span style={{ fontSize: 10, color: 'var(--ink-400)', fontWeight: 500 }}>{unit}</span>
+        <span style={{ fontSize: 11, color: 'var(--ink-400)', fontWeight: 500 }}>{unit}</span>
       </div>
     </div>
   );
@@ -163,7 +163,7 @@ function HouseScene({ tick }) {
         <rect x="45" y="62" width="14" height="28" fill="#2a3a34"/>
         <circle cx="56" cy="77" r="0.8" fill="#00C06F"/>
       </g>
-      <NodeLabel x={HOUSE_X} y={HOUSE_Y + 65} text="YOUR HOME"/>
+      <NodeLabel x={HOUSE_X} y={HOUSE_Y + 74} text="YOUR HOME"/>
 
       <g transform={`translate(${GRID_X}, ${COMM_Y + 5})`}>
         <rect x="-2" y="-22" width="4" height="44" fill="#6B7370"/>
@@ -209,8 +209,8 @@ function NodeLabel({ x, y, text }) {
   return (
     <g>
       <text x={x} y={y} textAnchor="middle"
-            fontSize="13" fontFamily="Geist Mono, monospace"
-            fill="var(--ink-900)" letterSpacing="0.06em" fontWeight="700">
+            fontSize="13" fontFamily="Inter, Geist, sans-serif"
+            fill="var(--ink-900)" letterSpacing="0.03em" fontWeight="900">
         {text}
       </text>
     </g>

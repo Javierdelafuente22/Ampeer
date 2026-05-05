@@ -67,7 +67,7 @@ function Screen2_Connected({ onNext, provider = 'your energy provider' }) {
           }}>
             <IconBolt size={12}/>
           </div>
-          <span className="t-mono" style={{ fontSize: 12, color: 'var(--ink-700)' }}>
+          <span style={{ fontSize: 12, color: 'var(--ink-700)', fontFamily: 'var(--font-sans)', fontWeight: 500 }}>
             MPAN ••••  1847
           </span>
         </div>
@@ -80,7 +80,7 @@ function Screen2_Connected({ onNext, provider = 'your energy provider' }) {
             width: 6, height: 6, borderRadius: 999, background: 'var(--lime-500)',
             animation: 'pwPulse 1.4s ease-in-out infinite',
           }}/>
-          <span className="t-mono">Receiving data · Verified</span>
+          <span style={{ fontSize: 11, fontFamily: 'var(--font-sans)', fontWeight: 500 }}>Receiving data · Verified</span>
         </div>
       </div>
 

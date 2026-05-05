@@ -357,7 +357,7 @@ function ProfileTab() {
               padding: '6px 10px', borderRadius: 8,
               background: 'var(--cream-100)', color: 'var(--ink-700)',
               fontSize: 11, fontWeight: 600, letterSpacing: '0.02em',
-              fontFamily: 'var(--font-mono)',
+              fontFamily: 'var(--font-sans)',
             }}>
               <IconCheck size={12}/>
               REQUEST RECEIVED
@@ -369,7 +369,7 @@ function ProfileTab() {
           marginTop: 24, fontSize: 10,
           color: 'var(--ink-400)',
           textAlign: 'center',
-          fontFamily: 'var(--font-mono)',
+          fontFamily: 'var(--font-sans)',
           letterSpacing: '0.05em',
         }}>
           PEERWAY v2.4.1 · BUILD 2026.04.19
