@@ -154,13 +154,9 @@ function DashboardTab() {
           marginBottom: 12,
           scrollMarginTop: 80,
         }}>
-          <h2 style={{
-            fontSize: 14, margin: 0,
-            color: 'var(--ink-900)', fontWeight: 600,
-            letterSpacing: '-0.01em',
-          }}>
+          <div className="t-label" style={{ color: 'var(--ink-400)', fontSize: 12 }}>
             This week's moments
-          </h2>
+          </div>
           <span className="t-mono" style={{ color: 'var(--ink-400)', fontSize: 11 }}>
             4 new
           </span>

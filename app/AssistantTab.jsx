@@ -1,3 +1,30 @@
+function SmartModeButton({ onClick }) {
+  const [hov, setHov] = React.useState(false);
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        appearance: 'none', cursor: 'pointer',
+        background: hov ? 'var(--ink-900)' : 'var(--surface)',
+        border: '1.5px solid var(--ink-900)',
+        padding: '7px 13px', borderRadius: 999,
+        display: 'flex', alignItems: 'center', gap: 5,
+        fontSize: 12, color: hov ? '#fff' : 'var(--ink-900)', fontWeight: 600,
+        letterSpacing: '-0.01em', fontFamily: 'var(--font-sans)',
+        transition: 'background .15s, color .15s, transform .15s',
+        transform: hov ? 'translateY(-2px)' : 'none',
+        marginTop: 24,
+        animation: 'pwSmartAttention 1.6s ease-out 0.8s 1 both',
+      }}
+    >
+      <IconSparkle size={12} />
+      Turn on smart mode
+    </button>
+  );
+}
+
 // Assistant tab — chat with AI trading agent. Mission-check pattern.
 function AssistantTab() {
   const [messages, setMessages] = React.useState([
@@ -192,20 +219,8 @@ function AssistantTab() {
       <TabHeader
         eyebrow="Assistant"
         title="Your agent"
-        right={
-        <button onClick={() => setView('intelligence')} style={{
-          appearance: 'none', border: 0, background: 'var(--surface)',
-          boxShadow: 'var(--shadow-sm)',
-          padding: '8px 12px', borderRadius: 999,
-          display: 'flex', alignItems: 'center', gap: 6,
-          fontSize: 11, color: 'var(--ink-700)', fontWeight: 600,
-          letterSpacing: '0.02em', fontFamily: 'var(--font-mono)',
-          cursor: 'pointer'
-        }}>
-            <IconSparkle size={12} />
-            SMARTER
-          </button>
-        } />
+        right={<SmartModeButton onClick={() => setView('intelligence')} />}
+        />
       
 
       {/* Chat feed */}
@@ -292,6 +307,11 @@ function AssistantTab() {
             @keyframes pwMicPulse {
               0%, 100% { box-shadow: 0 0 0 0 rgba(0,168,98,0.45); }
               50%      { box-shadow: 0 0 0 8px rgba(0,168,98,0.0); }
+            }
+            @keyframes pwSmartAttention {
+              0%   { box-shadow: none; }
+              35%  { box-shadow: 0 0 0 4px rgba(0,0,0,0.10); }
+              100% { box-shadow: none; }
             }
           `}</style>
         </form>
@@ -438,8 +458,9 @@ function IntelligenceScreen({ onBack }) {
 
   return (
     <div className="pw-screen">
+      <div style={{ marginBottom: 58 }}/>
       <div style={{
-        padding: '58px 24px 16px',
+        padding: '16px 24px 0',
         background: 'var(--cream-50)',
         position: 'sticky', top: 0, zIndex: 2
       }}>
@@ -447,24 +468,21 @@ function IntelligenceScreen({ onBack }) {
           appearance: 'none', border: 0, background: 'transparent',
           padding: 0, color: 'var(--ink-600)',
           display: 'flex', alignItems: 'center', gap: 4,
-          fontSize: 13, cursor: 'pointer', marginBottom: 14
+          fontSize: 13, cursor: 'pointer', marginBottom: 28
         }}>
           <IconChevron size={14} dir="left" />
           <span>Back to assistant</span>
         </button>
 
-        <div className="t-label" style={{ color: 'var(--lime-500)', marginBottom: 6 }}>
-          Smarter intelligence
-        </div>
         <h1 className="t-title" style={{
-          fontSize: 28, lineHeight: 1.08, margin: 0,
+          fontSize: 28, lineHeight: 1.08, margin: '0 0 12px',
           color: 'var(--ink-900)', fontWeight: 600, letterSpacing: '-0.025em'
         }}>
-          Optimise your energy.
+          Upgrade intelligence.
         </h1>
       </div>
 
-      <div style={{ padding: '12px 24px 120px' }}>
+      <div style={{ padding: '0 24px 120px' }}>
         <p style={{
           fontSize: 14, color: 'var(--ink-700)', lineHeight: 1.55,
           marginBottom: 22, textWrap: 'pretty'
@@ -546,7 +564,7 @@ function IntelligenceScreen({ onBack }) {
           fontSize: 11, color: 'var(--ink-400)', textAlign: 'center',
           marginTop: 10, letterSpacing: '-0.005em'
         }}>
-          Revocable anytime from Profile → Data
+          Revocable anytime from here or Profile → Pause Trading
         </div>
       </div>
     </div>);
