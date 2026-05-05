@@ -30,8 +30,12 @@ function DashboardTab({ onNavigate }) {
   const momentsRef = React.useRef();
   const scrollToMoments = () => {
     if (scrollRef.current && momentsRef.current) {
-      const top = momentsRef.current.offsetTop - 60;
-      scrollRef.current.scrollTo({ top, behavior: 'smooth' });
+      const stickyHeader = scrollRef.current.querySelector('[style*="sticky"]');
+      const headerH = stickyHeader ? stickyHeader.offsetHeight : 0;
+      const containerRect = scrollRef.current.getBoundingClientRect();
+      const elementRect = momentsRef.current.getBoundingClientRect();
+      const target = scrollRef.current.scrollTop + (elementRect.top - containerRect.top) - headerH - 12;
+      scrollRef.current.scrollTo({ top: target, behavior: 'smooth' });
     }
   };
 
@@ -166,7 +170,7 @@ function DashboardTab({ onNavigate }) {
             This week's moments
           </div>
           <span style={{ fontSize: 11, color: 'var(--ink-400)', fontFamily: 'var(--font-sans)', fontWeight: 500 }}>
-            4 new
+            5 new
           </span>
         </div>
 
@@ -198,6 +202,21 @@ function DashboardTab({ onNavigate }) {
             title="Peak shift: EV charged 2am–5am, saved £0.84"
             detail="We took advantage of a cheap rate window"
             accent="neutral"
+          />
+          <InsightCard
+            day="Sun"
+            icon={<IconDoc size={20}/>}
+            title="Your weekly report is ready!"
+            detail="Tap to download your PDF summary"
+            accent="lime"
+            onClick={() => {
+              const a = document.createElement('a');
+              a.href = 'app/peerway_weekly_report.pdf';
+              a.download = 'peerway_weekly_report.pdf';
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+            }}
           />
         </div>
 
@@ -270,14 +289,19 @@ function MetricCard({ icon, label, value, unit }) {
   );
 }
 
-function InsightCard({ day, icon, title, detail, accent }) {
+function InsightCard({ day, icon, title, detail, accent, onClick }) {
+  const Tag = onClick ? 'button' : 'div';
   return (
-    <div style={{
+    <Tag onClick={onClick} style={{
       padding: 14,
       background: 'var(--surface)',
       border: '1px solid var(--cream-200)',
       borderRadius: 'var(--r-md)',
       display: 'flex', gap: 12, alignItems: 'flex-start',
+      ...(onClick ? {
+        appearance: 'none', width: '100%', textAlign: 'left',
+        cursor: 'pointer', fontFamily: 'var(--font-sans)',
+      } : {}),
     }}>
       <div style={{
         width: 40, height: 40, borderRadius: 10,
@@ -312,7 +336,10 @@ function InsightCard({ day, icon, title, detail, accent }) {
           {detail}
         </div>
       </div>
-    </div>
+      {onClick && (
+        <IconChevron size={13} style={{ color: 'var(--ink-400)', flexShrink: 0, alignSelf: 'center' }}/>
+      )}
+    </Tag>
   );
 }
 
