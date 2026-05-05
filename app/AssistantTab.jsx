@@ -202,7 +202,7 @@ function AssistantTab() {
       } else {
         next.push({
           role: 'ai', type: 'text',
-          text: "Okay, holding off. Let me know what you'd like to change.",
+          text: "Okay, holding off. Let me know if I can help you with anything else.",
           ts: 'now'
         });
       }
@@ -254,7 +254,7 @@ function AssistantTab() {
 
       {/* Input dock */}
       <div style={{
-        padding: '12px 16px 84px',
+        padding: '12px 16px 95px',
         background: 'linear-gradient(180deg, transparent, var(--cream-50) 40%)'
       }}>
         <form onSubmit={(e) => {e.preventDefault();if (input.trim()) runPrompt(input.trim());}}

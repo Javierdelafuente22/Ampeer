@@ -138,7 +138,6 @@ function Screen3_Savings({ state, onNext, onBack }) {
           display: 'inline-flex', alignItems: 'center', gap: 6,
           color: 'var(--ink-900)', fontSize: 14, fontFamily: 'var(--font-sans)',
           fontWeight: 500, cursor: 'pointer',
-          borderBottom: '1px dashed var(--ink-400)', paddingBottom: 2,
         }}>
           <span>How we calculated this</span>
           <div style={{
@@ -179,7 +178,7 @@ function Screen3_Savings({ state, onNext, onBack }) {
       </div>
 
       {/* CTA */}
-      <div style={{ marginTop: 48 }}>
+      <div style={{ marginTop: 28 }}>
         <PwButton onClick={onNext} icon={<IconArrowRight size={16}/>}>
           Set up your profile
         </PwButton>

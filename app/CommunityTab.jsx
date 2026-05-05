@@ -21,7 +21,7 @@ function CommunityTab() {
 
       <div style={{ padding: '0 0 120px' }}>
         <div className="t-label" style={{ color: 'var(--ink-500)', fontSize: 13, padding: '0 24px 14px' }}>
-          Anonymous peers trading within 1km
+          Anonymous trades within 1km
         </div>
         {/* Map canvas */}
         <div style={{

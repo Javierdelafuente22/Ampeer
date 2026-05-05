@@ -382,10 +382,10 @@ function ProfileTab() {
 function SectionLabel({ children, danger }) {
   return (
     <div className="t-label" style={{
-      color: danger ? '#D4524B' : 'var(--ink-400)',
+      color: danger ? '#D4524B' : 'var(--ink-500)',
       marginBottom: 8, marginTop: 4,
       padding: '0 4px',
-      fontSize: 12,
+      fontSize: 13,
     }}>
       {children}
     </div>

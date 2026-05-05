@@ -20,7 +20,10 @@ function HouseTab() {
 
   return (
     <div className="pw-screen">
-      <TabHeader eyebrow="Home" title="Status"/>
+      <TabHeader eyebrow="Home" title="Your house"/>
+      <div className="t-label" style={{ color: 'var(--ink-500)', fontSize: 13, padding: '0 24px 14px' }}>
+        Live energy flow
+      </div>
 
       <div style={{ padding: '0 0 90px' }}>
         {/* Visualization canvas */}
@@ -131,7 +134,6 @@ function HouseScene({ tick }) {
         </linearGradient>
       </defs>
 
-      <line x1="0" y1="320" x2="360" y2="320" stroke="rgba(0,168,98,0.15)" strokeWidth="1" strokeDasharray="2 4"/>
 
       <g>
         <circle cx={SUN_X} cy={SUN_Y} r="44" fill="url(#sunGlow)"/>
