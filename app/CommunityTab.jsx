@@ -17,11 +17,12 @@ function CommunityTab() {
     <div className="pw-screen">
       <TabHeader
         eyebrow="Community"
-        title="Your peers"
-        subtitle="Anonymised peers trading within one km of you." />
-      
+        title="Your peers" />
 
       <div style={{ padding: '0 0 120px' }}>
+        <div className="t-label" style={{ color: 'var(--ink-500)', fontSize: 13, padding: '0 24px 14px' }}>
+          Anonymous peers trading within 1km
+        </div>
         {/* Map canvas */}
         <div style={{
           margin: '0 16px',
@@ -74,7 +75,7 @@ function CommunityTab() {
             borderRadius: 'var(--r-lg)',
             position: 'relative', overflow: 'hidden'
           }}>
-            <div className="t-label" style={{ color: 'rgba(255,255,255,0.5)', marginBottom: 8, fontSize: 12 }}>
+            <div className="t-label" style={{ color: 'rgba(255,255,255,0.5)', marginBottom: 8, fontSize: 13 }}>
               Collective impact this month
             </div>
             <div style={{
@@ -106,7 +107,7 @@ function CommunityTab() {
 
         {/* Trading breakdown */}
         <div style={{ padding: '20px 24px 0' }}>
-          <div className="t-label" style={{ color: 'var(--ink-400)', marginBottom: 12, fontSize: 12 }}>
+          <div className="t-label" style={{ color: 'var(--ink-500)', marginBottom: 12, fontSize: 13 }}>
             This month you've traded with
           </div>
           <div style={{
@@ -130,7 +131,7 @@ function CommunityTab() {
               display: 'flex', justifyContent: 'space-between',
               marginBottom: 12, alignItems: 'baseline'
             }}>
-              <span className="t-label" style={{ color: 'var(--ink-400)', fontSize: 12 }}>
+              <span className="t-label" style={{ color: 'var(--ink-500)', fontSize: 13 }}>
                 Community composition
               </span>
               <span style={{ fontSize: 11, color: 'var(--ink-600)', fontFamily: 'var(--font-sans)' }}>

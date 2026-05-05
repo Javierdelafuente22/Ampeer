@@ -81,7 +81,7 @@ function TabHeader({ eyebrow, title, right, subtitle }) {
 
   return (
     <div style={{
-      padding: isMobile ? '32px 24px 16px' : '72px 24px 16px',
+      padding: isMobile ? '26px 24px 16px' : '66px 24px 16px',
       background: 'var(--cream-50)',
       position: 'sticky', top: 0, zIndex: 2,
     }}>
