@@ -52,6 +52,7 @@ function AssistantTab() {
   const [listening, setListening] = React.useState(false);
   const recognitionRef = React.useRef(null);
   const scrollRef = React.useRef();
+  const inputRef = React.useRef();
 
   // Web Speech API — speech-to-text. Tap mic, speak, transcript fills the input.
   const speechSupported = typeof window !== 'undefined' &&
@@ -107,6 +108,14 @@ function AssistantTab() {
     }
   }, [messages]);
 
+  // Resize textarea when input changes from any source (typed, voice, programmatic)
+  React.useEffect(() => {
+    if (!inputRef.current) return;
+    inputRef.current.style.height = 'auto';
+    inputRef.current.style.height = inputRef.current.scrollHeight + 'px';
+  }, [input]);
+
+
   const prompts = [
   "Going on holiday this weekend",
   "Charge my EV by 7am"];
@@ -115,6 +124,7 @@ function AssistantTab() {
   const runPrompt = (text) => {
     setMessages((m) => [...m, { role: 'user', text, ts: 'now' }]);
     setInput('');
+    if (inputRef.current) { inputRef.current.style.height = '36px'; }
 
     // Simulate AI response after a beat
     setTimeout(() => {
@@ -132,7 +142,7 @@ function AssistantTab() {
         role: 'ai', type: 'plan', ts: 'now',
         summary: "Got it — sounds like you'll be away. Here's my plan:",
         plan: [
-        { label: 'Sell solar surplus Fri–Sun', detail: 'Est. +£6.80' },
+        { label: 'Sell solar surplus', detail: 'Est. +£6.80' },
         { label: 'Pause EV charging', detail: 'No sessions scheduled' },
         { label: 'Hold battery at 20%', detail: 'Ready for your return' },
         { label: 'Alert if grid outage', detail: 'Via SMS' }],
@@ -271,25 +281,41 @@ function AssistantTab() {
         padding: '12px 16px 95px',
         background: 'linear-gradient(180deg, transparent, var(--cream-50) 40%)'
       }}>
-        <form onSubmit={(e) => {e.preventDefault();if (input.trim()) runPrompt(input.trim());}}
+        <form onSubmit={(e) => { e.preventDefault(); if (input.trim()) runPrompt(input.trim()); }}
         style={{
-          display: 'flex', alignItems: 'center', gap: 8,
+          display: 'flex', alignItems: 'flex-end', gap: 8,
           padding: 6, background: 'var(--surface)',
           border: '1px solid var(--cream-200)',
-          borderRadius: 999,
+          borderRadius: 20,
           boxShadow: 'var(--shadow-sm)'
         }}>
-          <input
+          <textarea
+            ref={inputRef}
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            rows={1}
+            onChange={(e) => {
+              setInput(e.target.value);
+              e.target.style.height = 'auto';
+              e.target.style.height = e.target.scrollHeight + 'px';
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                if (input.trim()) runPrompt(input.trim());
+              }
+            }}
             placeholder={listening ? "Listening…" : "Ask or tell me anything…"}
             style={{
               flex: 1, border: 0, background: 'transparent', outline: 'none',
               padding: '8px 10px', fontSize: 14,
-              color: 'var(--ink-900)', fontFamily: 'var(--font-sans)'
+              color: 'var(--ink-900)', fontFamily: 'var(--font-sans)',
+              resize: 'none', overflow: 'hidden',
+              lineHeight: '20px',
+              boxSizing: 'border-box',
+              minHeight: 36, maxHeight: 140,
             }} />
           
-          {input.trim() ?
+          {input.trim() && !listening ?
           <button type="submit" style={{
             appearance: 'none', border: 0, cursor: 'pointer',
             width: 38, height: 38, borderRadius: 999,
@@ -356,12 +382,13 @@ function PromptChip({ label, onClick }) {
 function ChatBubble({ msg, idx, onConfirm, onSmartMode }) {
   if (msg.role === 'user') {
     return (
-      <div style={{ display: 'flex', justifyContent: 'flex-end', paddingLeft: 40 }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', paddingLeft: 40, minWidth: 0 }}>
         <div style={{
           background: 'var(--ink-900)', color: '#fff',
           padding: '10px 14px', borderRadius: '18px 18px 4px 18px',
           fontSize: 14, lineHeight: 1.4,
-          maxWidth: '85%', letterSpacing: '-0.005em'
+          maxWidth: '85%', letterSpacing: '-0.005em',
+          whiteSpace: 'pre-wrap', overflowWrap: 'anywhere',
         }}>
           {msg.text}
         </div>

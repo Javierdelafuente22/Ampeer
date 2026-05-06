@@ -430,7 +430,7 @@ function PdfViewer({ onBack }) {
           await navigator.share({ files: [file], title: 'Peerway Weekly Report' });
           return;
         }
-      } catch (e) { /* fall through */ }
+      } catch (e) { /* cancelled or unsupported — fall through */ }
     }
     const a = document.createElement('a');
     a.href = 'app/peerway_weekly_report.pdf';
@@ -440,14 +440,16 @@ function PdfViewer({ onBack }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: 'var(--cream-50)' }}>
+      {/* Header — back button absolute-left, title truly centred, download absolute-right (desktop only) */}
       <div style={{
         padding: `${isMobile ? 26 : 66}px 20px 16px`,
         background: 'var(--cream-50)',
         borderBottom: '1px solid var(--cream-200)',
-        display: 'flex', alignItems: 'center', gap: 8,
+        position: 'relative', display: 'flex', alignItems: 'center',
         flexShrink: 0,
       }}>
         <button onClick={onBack} style={{
+          position: 'absolute', left: 20,
           appearance: 'none', border: 0, background: 'transparent',
           display: 'flex', alignItems: 'center', gap: 4,
           color: 'var(--ink-600)', fontSize: 13, cursor: 'pointer', padding: 0,
@@ -457,11 +459,12 @@ function PdfViewer({ onBack }) {
           <span>Back</span>
         </button>
         <div style={{
-          flex: 1, textAlign: 'center',
+          width: '100%', textAlign: 'center',
           fontSize: 14, fontWeight: 600, color: 'var(--ink-900)',
           letterSpacing: '-0.005em',
         }}>Weekly Report</div>
         <button onClick={handleDownload} style={{
+          position: 'absolute', right: 20,
           appearance: 'none', border: 0, background: 'transparent',
           display: 'flex', alignItems: 'center',
           color: 'var(--ink-600)', cursor: 'pointer', padding: 0,
@@ -485,9 +488,10 @@ function PdfViewer({ onBack }) {
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             height: '100%', color: 'var(--ink-400)', fontSize: 13,
             fontFamily: 'var(--font-sans)', textAlign: 'center', padding: '0 24px',
-          }}>Could not load report. Tap the download button to open it.</div>
+          }}>Could not load report.</div>
         )}
-        <div ref={containerRef} style={{ padding: '12px', zoom: zoom }}/>
+        {/* width-based zoom: scales layout so overflow:auto scroll works correctly */}
+        <div ref={containerRef} style={{ padding: '12px', width: `${zoom * 100}%` }}/>
       </div>
     </div>
   );
