@@ -71,7 +71,7 @@ function Screen3_Savings({ state, onNext, onBack }) {
 
           {[
             { label: 'Standard grid tariff', value: 1640, color: 'var(--cream-200)', highlight: false },
-            { label: 'With Peerway',    value: 1250, color: 'var(--lime-500)', highlight: true, savings: 'save £390' },
+            { label: 'With Ampeer',    value: 1250, color: 'var(--lime-500)', highlight: true, savings: 'save £390' },
           ].map((row, i) => {
             const max = 1640;
             const pct = (row.value / max) * 100;
@@ -163,7 +163,7 @@ function Screen3_Savings({ state, onNext, onBack }) {
               <span className="t-num" style={{ color: 'var(--ink-900)' }}>9300 kWh</span>
               <span style={{ color: 'var(--ink-600)' }}>Avg. import price </span>
               <span className="t-num" style={{ color: 'var(--ink-900)', fontWeight: 600 }}>17.6p / kWh</span>
-              <span style={{ color: 'var(--ink-600)' }}>Peerway's avg. savings</span>
+              <span style={{ color: 'var(--ink-600)' }}>Ampeer's avg. savings</span>
               <span className="t-num" style={{ color: 'var(--lime-600)', fontWeight: 600 }}>24%</span>
             </div>
             <div style={{
@@ -171,7 +171,7 @@ function Screen3_Savings({ state, onNext, onBack }) {
               borderTop: '1px solid var(--cream-200)',
               fontSize: 12, color: 'var(--ink-400)',
             }}>
-              Data provided by British Gas and Peerway's simulations.
+              Data provided by British Gas and Ampeer's simulations.
             </div>
           </div>
         )}

@@ -18,7 +18,7 @@ function PeerwayPrintShell() {
             <circle cx="50" cy="50" r="20" fill="#00C06F"/>
             <path d="M52 34 L40 54 L48 54 L44 66 L60 46 L52 46 Z" fill="#07160F"/>
           </svg>
-          <div className="cover-wordmark">Peerway</div>
+          <div className="cover-wordmark">Ampeer</div>
         </div>
         <h1 className="cover-title">P2P Energy Management</h1>
         <p className="cover-sub">Mobile app · 5 core tabs · interactive prototype</p>
@@ -27,7 +27,7 @@ function PeerwayPrintShell() {
           <div><span className="meta-k">Platform</span><span className="meta-v">iOS · 390×844pt</span></div>
           <div><span className="meta-k">Type system</span><span className="meta-v">Geist · Geist Mono</span></div>
         </div>
-        <div className="cover-foot">peerway.app</div>
+        <div className="cover-foot">ampeer.app</div>
       </section>
 
       {/* One page per tab */}
@@ -46,7 +46,7 @@ function PeerwayPrintShell() {
             </IOSDevice>
           </div>
           <footer className="page-footer">
-            <span>Peerway · {t.label}</span>
+            <span>Ampeer · {t.label}</span>
             <span>{i + 2} / {tabs.length + 1}</span>
           </footer>
         </section>

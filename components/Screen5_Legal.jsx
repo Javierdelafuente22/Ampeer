@@ -6,21 +6,21 @@ function Screen5_Legal({ onNext, onBack }) {
   const items = [
     {
       label: 'Terms of Service',
-      desc: 'How Peerway operates and what you agree to.',
+      desc: 'How Ampeer operates and what you agree to.',
       icon: <IconDoc size={14}/>,
       content: (
         <div>
           <p style={{ marginTop: 0 }}>
-            <strong>What Peerway does.</strong> Peerway matches households with surplus solar electricity with nearby neighbours who want cheaper and cleaner energy. We are a technology platform — not your energy supplier. Your supplier stays the same, and all energy flows through the national grid as normal.
+            <strong>What Ampeer does.</strong> Ampeer matches households with surplus solar electricity with nearby neighbours who want cheaper and cleaner energy. We are a technology platform — not your energy supplier. Your supplier stays the same, and all energy flows through the national grid as normal.
           </p>
           <p>
-            <strong>Automated trading.</strong> Once you opt in, Peerway automatically matches your surplus or consumption with local peers. You can pause or stop at any time — no effort, no exit fees, no minimum term.
+            <strong>Automated trading.</strong> Once you opt in, Ampeer automatically matches your surplus or consumption with local peers. You can pause or stop at any time — no effort, no exit fees, no minimum term.
           </p>
           <p>
-            <strong>Pricing.</strong> Trades settle at rates between the grid export rate and the standard import rate — sellers earn more, buyers pay less. Peerway takes a small fee per trade only from your retailer.
+            <strong>Pricing.</strong> Trades settle at rates between the grid export rate and the standard import rate — sellers earn more, buyers pay less. Ampeer takes a small fee per trade only from your retailer.
           </p>
           <p>
-            <strong>Regulatory basis.</strong> Peerway operates under Ofgem's framework for peer-to-peer trading. Smart meter data is accessed via your supplier's authorised API under the Smart Energy Code (SEC). We comply with the Electricity Act 1989 and Energy Act 2023.
+            <strong>Regulatory basis.</strong> Ampeer operates under Ofgem's framework for peer-to-peer trading. Smart meter data is accessed via your supplier's authorised API under the Smart Energy Code (SEC). We comply with the Electricity Act 1989 and Energy Act 2023.
           </p>
           <p style={{ marginBottom: 0 }}>
             <strong>Changes to these terms.</strong> We will notify you at least 30 days before any material change. You can reject changes by closing your account at any time.
@@ -65,7 +65,7 @@ function Screen5_Legal({ onNext, onBack }) {
             <strong>Your right.</strong> Under Article 17 of the UK GDPR, you have the right to request the deletion of all personal data we hold about you. We honour this without requiring a reason.
           </p>
           <p>
-            <strong>How to request it.</strong> Go to Profile → Your Data (GDPR) → Delete my account, or email <span style={{ fontWeight: 500 }}>privacy@peerway.co.uk</span>. We will confirm receipt within 3-5 business days and complete the deletion within 30 calendar days, as required by UK GDPR Article 12(3).
+            <strong>How to request it.</strong> Go to Profile → Your Data (GDPR) → Delete my account, or email <span style={{ fontWeight: 500 }}>privacy@ampeer.co.uk</span>. We will confirm receipt within 3-5 business days and complete the deletion within 30 calendar days, as required by UK GDPR Article 12(3).
           </p>
           <p>
             <strong>What gets deleted.</strong> Your name, email, postcode, meter details, household profile, and all personally identifiable details.
@@ -141,7 +141,7 @@ function Screen5_Legal({ onNext, onBack }) {
 
       {/* Reassurance */}
       <div style={{ marginTop: 4 }}>
-        <PwReassurance title="Why Peerway saves you money.">
+        <PwReassurance title="Why Ampeer saves you money.">
           Trading with peers means you buy for less and sell for more versus a standard grid tariff.
         </PwReassurance>
       </div>
@@ -202,7 +202,7 @@ function Screen5_Legal({ onNext, onBack }) {
           {agreed && <span style={{ color: 'var(--lime-400)', display: 'flex' }}><IconCheck size={14}/></span>}
         </div>
         <span style={{ fontSize: 14, lineHeight: 1.5, color: 'var(--ink-700)' }}>
-          I agree to Peerway's Terms and Privacy policy, and consent to automated trading.
+          I agree to Ampeer's Terms and Privacy policy, and consent to automated trading.
         </span>
       </button>
 

@@ -5,12 +5,12 @@ function CommunityTab({ highlight, onClearHighlight }) {
   const [inviteMethod, setInviteMethod] = React.useState(null); // null | 'share' | 'clipboard'
 
   const handleInvite = async () => {
-    const url = 'https://javierdelafuente22.github.io/Peerway/';
+    const url = 'https://javierdelafuente22.github.io/Ampeer/';
     try {
       if (navigator.share) {
         await navigator.share({
-          title: 'Join me on Peerway',
-          text: 'I\'ve been trading solar energy with my neighbours on Peerway. Join and we both earn £10!',
+          title: 'Join me on Ampeer',
+          text: 'I\'ve been trading solar energy with my neighbours on Ampeer. Join and we both earn £10!',
           url,
         });
         setInviteMethod('share');

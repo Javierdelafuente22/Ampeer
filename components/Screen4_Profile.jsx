@@ -125,7 +125,7 @@ function Screen4_Profile({ state, setState, onNext, onBack }) {
           <IconLock size={14}/>
         </div>
         <div>
-          Data stays on device, and is only used to optimise trading.
+          Data is only used to optimise trading.
         </div>
       </div>
 

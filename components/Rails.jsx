@@ -6,7 +6,7 @@ function SystemRail() {
   return (
     <div style={{ fontFamily: 'var(--font-sans)' }}>
       <div className="t-label" style={{ color: 'var(--ink-500)', marginBottom: 14 }}>
-        Peerway · design system
+        Ampeer · design system
       </div>
 
       {/* Colors */}
@@ -126,7 +126,7 @@ const NOTES = {
     notes: [
       ['Earned calm', 'Auto-advances at 2.4s — long enough to register success, short enough to not frustrate.'],
       ['Motion means progress', 'Pulsing rings expand outward, reinforcing "signal dispatched" metaphor without being decorative.'],
-      ['Provider badge is neutral', "We don't co-brand the confirmation — Peerway stays the trusted actor."],
+      ['Provider badge is neutral', "We don't co-brand the confirmation — Ampeer stays the trusted actor."],
     ],
   },
   2: {
@@ -134,7 +134,7 @@ const NOTES = {
     notes: [
       ['The payoff moment', 'Serif numerals at 88px. This is the first time the user sees real value, and the type acknowledges it.'],
       ['Honest range', '£180–£340 is wide on purpose. Point estimates feel like claims; ranges feel like evidence.'],
-      ['Comparison bar', 'Standard tariff sits in neutral cream-200; Peerway fills forest-700. Difference is marked with –£260, not ×%.'],
+      ['Comparison bar', 'Standard tariff sits in neutral cream-200; Ampeer fills forest-700. Difference is marked with –£260, not ×%.'],
     ],
   },
   3: {
@@ -172,7 +172,7 @@ const NOTES = {
   error: {
     title: 'Error state',
     notes: [
-      ['Blame never lands on the user', '"We couldn\'t reach your meter" — actor is Peerway, not the user.'],
+      ['Blame never lands on the user', '"We couldn\'t reach your meter" — actor is Ampeer, not the user.'],
       ['Technical detail, contained', 'Error code is present for support but visually quiet (ink-400 mono).'],
       ['Always a second path', 'Manual setup is offered below the retry CTA. No dead-end screens.'],
     ],

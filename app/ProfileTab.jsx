@@ -38,7 +38,7 @@ function ProfileTab() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'peerway-trading-history.csv';
+    a.download = 'ampeer-trading-history.csv';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -58,7 +58,7 @@ function ProfileTab() {
             <strong>Trading history</strong> — every peer trade, including timestamps, kWh amounts, rates, and counterparties (anonymised).
           </p>
           <p>
-            <strong>Consumption data</strong> — half-hourly smart meter readings as processed by Peerway.
+            <strong>Consumption data</strong> — half-hourly smart meter readings as processed by Ampeer.
           </p>
           <p>
             <strong>Savings records</strong> — weekly and monthly summaries, including grid-comparison calculations.
@@ -82,10 +82,10 @@ function ProfileTab() {
             Frequently asked questions (FAQs)
           </p>
           <p>
-            <strong>Can I choose who I trade with?</strong> No. All peers are anonymised — you never see names or addresses. Peerway matches you with the nearest available peers to minimise grid losses and maximise savings.
+            <strong>Can I choose who I trade with?</strong> No. All peers are anonymised — you never see names or addresses. Ampeer matches you with the nearest available peers to minimise grid losses and maximise savings.
           </p>
           <p>
-            <strong>What happens during a power cut?</strong> Nothing changes. Supply is managed by your DNO and supplier. Peerway only handles the commercial layer.
+            <strong>What happens during a power cut?</strong> Nothing changes. Supply is managed by your DNO and supplier. Ampeer only handles the commercial layer.
           </p>
           <p>
             <strong>Can the app be adversarily gamed?</strong> The algorithm is not accessible from the app, making manipulation highly unlikely. Moreover, trading automatically stops if you become worse-off versus grid tariffs.
@@ -375,7 +375,7 @@ function ProfileTab() {
           fontFamily: 'var(--font-sans)',
           letterSpacing: '0.05em',
         }}>
-          PEERWAY v2.4.1 · BUILD 2026.04.19
+          AMPEER v2.4.1 · BUILD 2026.04.19
         </div>
       </div>
     </div>

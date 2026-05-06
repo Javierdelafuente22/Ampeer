@@ -365,7 +365,7 @@ function PdfViewer({ onBack }) {
     pdfjsLib.GlobalWorkerOptions.workerSrc =
       'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-    pdfjsLib.getDocument('app/peerway_weekly_report.pdf').promise
+    pdfjsLib.getDocument('app/ampeer_weekly_report.pdf').promise
       .then(pdf => {
         const container = containerRef.current;
         if (!container) return;
@@ -393,18 +393,18 @@ function PdfViewer({ onBack }) {
   const handleDownload = async () => {
     if (isMobile && navigator.share) {
       try {
-        const res = await fetch('app/peerway_weekly_report.pdf');
+        const res = await fetch('app/ampeer_weekly_report.pdf');
         const blob = await res.blob();
-        const file = new File([blob], 'peerway_weekly_report.pdf', { type: 'application/pdf' });
+        const file = new File([blob], 'ampeer_weekly_report.pdf', { type: 'application/pdf' });
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share({ files: [file], title: 'Peerway Weekly Report' });
+          await navigator.share({ files: [file], title: 'Ampeer Weekly Report' });
           return;
         }
       } catch (e) { /* cancelled or unsupported — fall through */ }
     }
     const a = document.createElement('a');
-    a.href = 'app/peerway_weekly_report.pdf';
-    a.download = 'peerway_weekly_report.pdf';
+    a.href = 'app/ampeer_weekly_report.pdf';
+    a.download = 'ampeer_weekly_report.pdf';
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
   };
 

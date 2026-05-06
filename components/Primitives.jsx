@@ -40,7 +40,7 @@ function PeerwayLogo({ size = 22 }) {
       <span className="t-display" style={{
         fontSize: size, lineHeight: 1, color: 'var(--ink-900)', letterSpacing: '-0.01em',
         fontWeight: 400,
-      }}>Peerway</span>
+      }}>Ampeer</span>
     </div>
   );
 }

@@ -18,7 +18,7 @@ function Screen1_Postcode({ state, setState, onNext }) {
       <div style={{ marginBottom: 28 }}/>
       <PwPageTitle
         eyebrow=""
-        title="Welcome to Peerway, Sarah."
+        title="Welcome to Ampeer, Sarah."
         subtitle="You have been securely redirected from your Octopus online account. You are a few steps away from sharing energy with your neighbours."
         size={34}
       />
@@ -78,7 +78,7 @@ function Screen1_Postcode({ state, setState, onNext }) {
             borderRadius: 'var(--r-md)',
             fontSize: 13, lineHeight: 1.55, color: 'var(--ink-600)',
           }}>
-            Peer trading allows you to <span style={{ fontWeight: 600, color: 'var(--ink-900)' }}>buy and sell electricity with your neighbors at cheaper rates</span>. It lowers your bills while creating a cleaner, more resilient energy grid. Peerway automates this process, finding the best trades that match your household's needs.
+            Peer trading allows you to <span style={{ fontWeight: 600, color: 'var(--ink-900)' }}>buy and sell electricity with your neighbors at cheaper rates</span>. It lowers your bills while creating a cleaner, more resilient energy grid. Ampeer automates this process, finding the best trades that match your household's needs.
           </div>
         )}
       </div>
