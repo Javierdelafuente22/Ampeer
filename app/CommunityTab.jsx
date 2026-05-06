@@ -357,7 +357,8 @@ function CommunityMap({ tick }) {
     return [
       { from: YOU_NODE,  to: PEERS[1], color: '#00C06F' },  // YOU → home (NW-ish)
       { from: YOU_NODE,  to: PEERS[6],  color: '#00A862' },  // YOU → shop
-      { from: PEERS[4], to: GRID_NODE, color: '#8aa69b' },  // school → GRID
+      { from: GRID_NODE, to: PEERS[4],  color: '#8aa69b' },  // GRID → school
+      { from: GRID_NODE, to: PEERS[3],  color: '#8aa69b' },  // GRID → home (next to school)
       { from: PEERS[8], to: PEERS[2],  color: '#00A862' },  // home → shop (peer↔peer)
     ];
   }, []);
