@@ -2,6 +2,26 @@
 function CommunityTab({ highlight, onClearHighlight }) {
   const [tick, setTick] = React.useState(0);
   const [glowing, setGlowing] = React.useState(false);
+  const [inviteMethod, setInviteMethod] = React.useState(null); // null | 'share' | 'clipboard'
+
+  const handleInvite = async () => {
+    const url = 'https://javierdelafuente22.github.io/Peerway/';
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: 'Join me on Peerway',
+          text: 'I\'ve been trading solar energy with my neighbours on Peerway. Join and we both earn £10!',
+          url,
+        });
+        setInviteMethod('share');
+      } else {
+        await navigator.clipboard.writeText(url);
+        setInviteMethod('clipboard');
+      }
+    } catch (e) {
+      // user cancelled — do nothing
+    }
+  };
 
   React.useEffect(() => {
     let raf;
@@ -177,32 +197,73 @@ function CommunityTab({ highlight, onClearHighlight }) {
 
         {/* Invite CTA — at the bottom */}
         <div style={{ padding: '24px 24px 0' }}>
-          <button className="pw-btn pw-btn-primary" style={{
-            width: '100%', height: 56,
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            padding: '0 20px'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          {inviteMethod ? (
+            <div className="pw-fade-in" style={{
+              width: '100%', minHeight: 56,
+              display: 'flex', alignItems: 'center', gap: 14,
+              padding: '14px 20px',
+              background: inviteMethod === 'clipboard' ? 'var(--ink-900)' : 'var(--lime-500)',
+              borderRadius: 'var(--r-md)',
+              boxSizing: 'border-box',
+            }}>
               <div style={{
                 width: 32, height: 32, borderRadius: 999,
-                background: 'rgba(0,192,111,0.20)',
+                background: inviteMethod === 'clipboard' ? 'rgba(0,192,111,0.20)' : 'rgba(0,0,0,0.15)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: 'var(--lime-400)'
+                flexShrink: 0, color: inviteMethod === 'clipboard' ? 'var(--lime-400)' : 'var(--ink-900)',
               }}>
-                <IconPlus size={14} />
+                <IconCheck size={14}/>
               </div>
-              <div style={{ textAlign: 'left' }}>
-                <div style={{ fontSize: 14, fontWeight: 600 }}>Invite a neighbor</div>
-                <div style={{
-                  fontSize: 11, color: 'rgba(255,255,255,0.6)', fontWeight: 500,
-                  letterSpacing: '-0.005em', marginTop: 1
-                }}>
-                  You both earn £10 when they join
-                </div>
+              <div>
+                {inviteMethod === 'clipboard' ? (
+                  <>
+                    <div style={{ fontSize: 14, fontWeight: 600, color: '#fff' }}>
+                      Invite link copied to clipboard!
+                    </div>
+                    <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', fontWeight: 500, marginTop: 1 }}>
+                      You'll receive £10 when they join
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink-900)' }}>
+                      Invite link ready to share — nice one!
+                    </div>
+                    <div style={{ fontSize: 11, color: 'rgba(0,0,0,0.5)', fontWeight: 500, marginTop: 1 }}>
+                      £10 added to your account when they join
+                    </div>
+                  </>
+                )}
               </div>
             </div>
-            <IconChevron size={16} />
-          </button>
+          ) : (
+            <button onClick={handleInvite} className="pw-btn pw-btn-primary" style={{
+              width: '100%', height: 56,
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '0 20px'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div style={{
+                  width: 32, height: 32, borderRadius: 999,
+                  background: 'rgba(0,192,111,0.20)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: 'var(--lime-400)'
+                }}>
+                  <IconPlus size={14} />
+                </div>
+                <div style={{ textAlign: 'left' }}>
+                  <div style={{ fontSize: 14, fontWeight: 600 }}>Invite a neighbor</div>
+                  <div style={{
+                    fontSize: 11, color: 'rgba(255,255,255,0.6)', fontWeight: 500,
+                    letterSpacing: '-0.005em', marginTop: 1
+                  }}>
+                    You both earn £10 when they join
+                  </div>
+                </div>
+              </div>
+              <IconChevron size={16} />
+            </button>
+          )}
         </div>
       </div>
     </div>);

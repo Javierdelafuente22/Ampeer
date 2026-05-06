@@ -356,8 +356,38 @@ function PdfViewer({ onBack }) {
     window.navigator.standalone === true;
 
   const containerRef = React.useRef();
+  const scrollDivRef = React.useRef();
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(false);
+
+  // Pinch-to-zoom state
+  const [zoom, setZoom] = React.useState(1);
+  const zoomRef = React.useRef(1);
+  const lastDistRef = React.useRef(null);
+
+  const getdist = (t) => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+
+  const onTouchStart = (e) => {
+    if (e.touches.length === 2) lastDistRef.current = getdist(e.touches);
+  };
+  const onTouchMove = (e) => {
+    if (e.touches.length !== 2 || lastDistRef.current === null) return;
+    const d = getdist(e.touches);
+    const next = Math.min(4, Math.max(0.75, zoomRef.current * (d / lastDistRef.current)));
+    zoomRef.current = next;
+    setZoom(next);
+    lastDistRef.current = d;
+  };
+  const onTouchEnd = () => { lastDistRef.current = null; };
+
+  // Prevent scroll during pinch (needs non-passive listener)
+  React.useEffect(() => {
+    const el = scrollDivRef.current;
+    if (!el) return;
+    const block = (e) => { if (e.touches.length === 2) e.preventDefault(); };
+    el.addEventListener('touchmove', block, { passive: false });
+    return () => el.removeEventListener('touchmove', block);
+  }, []);
 
   React.useEffect(() => {
     const pdfjsLib = window.pdfjsLib;
@@ -390,7 +420,18 @@ function PdfViewer({ onBack }) {
       .catch(() => { setError(true); setLoading(false); });
   }, []);
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
+    if (isMobile && navigator.share) {
+      try {
+        const res = await fetch('app/peerway_weekly_report.pdf');
+        const blob = await res.blob();
+        const file = new File([blob], 'peerway_weekly_report.pdf', { type: 'application/pdf' });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({ files: [file], title: 'Peerway Weekly Report' });
+          return;
+        }
+      } catch (e) { /* fall through */ }
+    }
     const a = document.createElement('a');
     a.href = 'app/peerway_weekly_report.pdf';
     a.download = 'peerway_weekly_report.pdf';
@@ -429,7 +470,9 @@ function PdfViewer({ onBack }) {
         </button>
       </div>
 
-      <div style={{ flex: 1, overflowY: 'auto', padding: '12px' }}>
+      <div ref={scrollDivRef}
+        onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}
+        style={{ flex: 1, overflow: 'auto' }}>
         {loading && !error && (
           <div style={{
             display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -444,7 +487,7 @@ function PdfViewer({ onBack }) {
             fontFamily: 'var(--font-sans)', textAlign: 'center', padding: '0 24px',
           }}>Could not load report. Tap the download button to open it.</div>
         )}
-        <div ref={containerRef}/>
+        <div ref={containerRef} style={{ padding: '12px', zoom: zoom }}/>
       </div>
     </div>
   );

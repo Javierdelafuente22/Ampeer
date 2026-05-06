@@ -21,7 +21,7 @@ function Screen4_Profile({ state, setState, onNext, onBack }) {
       <PwPageTitle
         eyebrow="Step 3 of 4 — Profile"
         title="Check your details."
-        subtitle="Tap the pencil to edit any line, or the info icon to see why we use it."
+        subtitle="Your details have been pre-filled with your Octopus account. Tap the pencil to edit, or the info icon to see why we use it."
         size={32}
       />
 
