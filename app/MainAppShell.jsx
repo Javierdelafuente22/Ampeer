@@ -2,10 +2,71 @@
 // On mobile (touch + narrow screen), renders full-screen with no frame.
 // On desktop, keeps the centered IOSDevice card.
 
+// Weather state is owned here (not in HouseTab) so the override applied on the
+// Home tab also drives the Community tab's animation.
+const SHELL_WEATHER_LAT = 51.48, SHELL_WEATHER_LON = -0.20; // Fulham, SW6
+function shellClassifyWeather(code) {
+  if (code <= 1) return 'sunny';
+  if (code <= 64) return 'cloudy';
+  return 'rainy';
+}
+
+// Night runs 20:00–06:00 UK local time. Overrides the live weather kind.
+function isUKNight(date) {
+  const hr = parseInt(
+    new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', hour: 'numeric', hour12: false }).format(date),
+    10
+  );
+  return hr >= 20 || hr < 6;
+}
+
+function useWeatherState() {
+  const [weather, setWeather] = React.useState(null);
+  const [override, setOverride] = React.useState(null);
+  const [now, setNow] = React.useState(() => new Date());
+
+  React.useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 60 * 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  React.useEffect(() => {
+    let cancelled = false;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${SHELL_WEATHER_LAT}&longitude=${SHELL_WEATHER_LON}&current=temperature_2m,weather_code&timezone=Europe%2FLondon`;
+    fetch(url)
+      .then(r => r.json())
+      .then(d => {
+        if (cancelled) return;
+        if (d && d.current && typeof d.current.weather_code === 'number') {
+          setWeather({
+            kind: shellClassifyWeather(d.current.weather_code),
+            temp: Math.round(d.current.temperature_2m),
+          });
+        } else {
+          setWeather({ kind: 'sunny', temp: 18, error: true });
+        }
+      })
+      .catch(() => { if (!cancelled) setWeather({ kind: 'sunny', temp: 18, error: true }); });
+    return () => { cancelled = true; };
+  }, []);
+
+  const isNight = isUKNight(now);
+  // Time wins over weather: at night, kind is 'night' regardless of cloud cover.
+  const liveKind = isNight ? 'night' : (weather?.kind ?? 'sunny');
+  const activeKind = override || liveKind;
+  const activeTemp = weather?.temp ?? 18;
+  const isLoading = !weather;
+  const hasError = !!weather?.error;
+  const isLive = !override && weather && !hasError;
+
+  return { weather, override, setOverride, liveKind, activeKind, activeTemp, isLoading, hasError, isLive };
+}
+
 function MainAppShell() {
   const [tab, setTab] = React.useState('home');
   const [communityHighlight, setCommunityHighlight] = React.useState(false);
   const [homeHighlight, setHomeHighlight] = React.useState(true);
+  const weatherState = useWeatherState();
 
   const isMobile =
     window.matchMedia('(max-width: 600px) and (pointer: coarse)').matches ||
@@ -19,8 +80,8 @@ function MainAppShell() {
 
   const renderTab = () => {
     switch (tab) {
-      case 'home':      return <HouseTab onNavigate={handleNavigate} highlight={homeHighlight} onClearHighlight={() => setHomeHighlight(false)}/>;
-      case 'community': return <CommunityTab highlight={communityHighlight} onClearHighlight={() => setCommunityHighlight(false)}/>;
+      case 'home':      return <HouseTab onNavigate={handleNavigate} highlight={homeHighlight} onClearHighlight={() => setHomeHighlight(false)} weatherState={weatherState}/>;
+      case 'community': return <CommunityTab highlight={communityHighlight} onClearHighlight={() => setCommunityHighlight(false)} weatherState={weatherState}/>;
       case 'dashboard': return <DashboardTab onNavigate={handleNavigate}/>;
       case 'profile':   return <ProfileTab/>;
       default:          return <DashboardTab/>;

@@ -196,7 +196,28 @@ function AssistantTab() {
       };
     }
 
-    // 4) ENERGY-RELATED but outside the 3 use cases — gentle redirect
+    // 4) "What does the app do / how does Ampeer work" — friendly explainer
+    if (/\b(what (does|is) (the |this )?(app|ampeer|it)( do)?|what'?s (the |this )?(app|ampeer|it)( do)?|what (is|'?s) (it|this|the app) for|how (does|do) (it|this|the app|ampeer) work|how (does|do) ampeer work|tell me (about|more about) (the |this )?(app|ampeer|it)|explain (the |this |it )?(app|ampeer)?|describe (the |this )?(app|ampeer|it)|how does peer.to.peer|how does p2p)\b/.test(t)) {
+      return {
+        role: 'ai', type: 'message', ts: 'now',
+        text:
+          "Ampeer helps you trade your spare solar energy with neighbours instead of selling it back to the grid for a low price. When your panels produce more than you use, Ampeer automatically sells the extra to nearby homes — better for you, cheaper for them. When the sun isn't out, you buy from neighbours at below-grid rates. Everything is automated and optimised, no effort to trade is needed from you."
+      };
+    }
+
+    // 5) "Why is this beneficial / what's in it for me / why use it" — value pitch
+    if (/\b(why (is|are|would|should) (this|it|i|ampeer|the app|using ampeer)|why use (this|the app|ampeer)|how (do|does|will) (it|this|ampeer) (help|benefit) (me|us|society|the planet|the environment|the community)|how (do|will) i benefit|what'?s in it for me|what'?s the benefit|benefits? (of|for|to) (using )?(this|it|the app|ampeer|me)|is (this|it|ampeer) worth it|good for (me|society|the planet|the environment|the community)|help (the )?(environment|planet|community)|why does it benefit)\b/.test(t)) {
+      return {
+        role: 'ai', type: 'message', ts: 'now',
+        text:
+          "Three big wins.\n\n" +
+          "First, your wallet. Most homes save £200–£600 a year — you sell surplus for more than the grid would pay, and buy from neighbours for less than it would charge.\n\n" +
+          "Second, your community. The electricity from your roof powers a school, shop, or family on your street instead of travelling miles down high-voltage lines.\n\n" +
+          "Third, your planet. Peer-to-peer trading makes solar pay off properly, which encourages more roofs to go green. Lots of small local producers is exactly what decarbonises the grid."
+      };
+    }
+
+    // 6) ENERGY-RELATED but outside the use cases — gentle redirect
     if (/\b(energy|electricity|power|solar|battery|grid|tariff|surplus|kwh|kw|sell|buy|trade|trading|peer|community|bill|saving|savings|price|cheap|peak|off-?peak)\b/.test(t)) {
       return {
         role: 'ai', type: 'message', ts: 'now',
@@ -204,7 +225,7 @@ function AssistantTab() {
       };
     }
 
-    // 5) NON-ENERGY — politely decline
+    // 7) NON-ENERGY — politely decline
     return {
       role: 'ai', type: 'message', ts: 'now',
       text: "I can only help with energy-related tasks — like managing your solar, planning around holidays or work, or scheduling EV charging. Ask me about any of those!"
@@ -509,8 +530,9 @@ function ChatBubble({ msg, idx, onConfirm, onSmartMode }) {
             border: '1px solid ' + (msg.type === 'done' ? 'var(--lime-100)' : 'var(--cream-200)'),
             borderRadius: '4px 18px 18px 18px',
             padding: '10px 14px',
-            fontSize: 14, color: 'var(--ink-900)', lineHeight: 1.4,
-            letterSpacing: '-0.005em', textWrap: 'pretty'
+            fontSize: 14, color: 'var(--ink-900)', lineHeight: 1.45,
+            letterSpacing: '-0.005em', textWrap: 'pretty',
+            whiteSpace: 'pre-wrap',
           }}>
             {msg.text}
           </div>

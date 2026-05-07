@@ -1,5 +1,6 @@
 // Community tab — animated map of anonymized trading peers
-function CommunityTab({ highlight, onClearHighlight }) {
+function CommunityTab({ highlight, onClearHighlight, weatherState }) {
+  const activeKind = weatherState?.activeKind || 'sunny';
   const [tick, setTick] = React.useState(0);
   const [glowing, setGlowing] = React.useState(false);
   const [inviteMethod, setInviteMethod] = React.useState(null); // null | 'share' | 'clipboard'
@@ -65,12 +66,19 @@ function CommunityTab({ highlight, onClearHighlight }) {
           margin: '0 16px',
           height: 300, position: 'relative',
           borderRadius: 'var(--r-lg)',
-          background: 'linear-gradient(180deg, #EEF4E8 0%, #E4EEDC 100%)',
+          background: activeKind === 'night'
+            ? 'linear-gradient(180deg, #1F2940 0%, #0F1828 100%)'
+            : activeKind === 'rainy'
+              ? 'linear-gradient(180deg, #BFC9D2 0%, #95A4B0 100%)'
+              : activeKind === 'cloudy'
+                ? 'linear-gradient(180deg, #E8E4DA 0%, #DCE3DA 100%)'
+                : 'linear-gradient(180deg, #EEF4E8 0%, #E4EEDC 100%)',
           overflow: 'hidden',
           boxShadow: 'var(--shadow-sm)',
           animation: glowing ? 'pwMapGlow 3.2s ease-in-out forwards' : 'none',
+          transition: 'background 0.6s ease',
         }}>
-          <CommunityMap tick={tick} />
+          <CommunityMap tick={tick} kind={activeKind} />
 
           {/* Legend */}
           <div style={{
@@ -351,17 +359,47 @@ const PEERS = [
 const GRID_NODE = { x: 220, y: 185 };
 const YOU_NODE = { x: 140, y: 160 };
 
-function CommunityMap({ tick }) {
-  // Active flows — fixed set so the visualization is stable, not constantly reshuffling
+function CommunityMap({ tick, kind }) {
+  // Active flows depend on the weather kind (driven by Home tab override).
+  // Sunny: vibrant peer-to-peer + lots of YOU → trades.
+  // Cloudy: mix of YOU → and GRID → flows; modest activity.
+  // Rainy: grid-dominated, no flows out from YOU (you're using your battery).
   const activeFlows = React.useMemo(() => {
+    if (kind === 'night') {
+      // Quieter than rainy — fewer flows, lighter blue against dark.
+      return [
+        { from: GRID_NODE, to: PEERS[1], color: '#7a9cc2' },
+        { from: GRID_NODE, to: PEERS[5], color: '#7a9cc2' },
+        { from: GRID_NODE, to: PEERS[8], color: '#7a9cc2' },
+      ];
+    }
+    if (kind === 'rainy') {
+      return [
+        { from: GRID_NODE, to: PEERS[1], color: '#5b8aa6' },
+        { from: GRID_NODE, to: PEERS[5], color: '#5b8aa6' },
+        { from: GRID_NODE, to: PEERS[8], color: '#5b8aa6' },
+        { from: GRID_NODE, to: PEERS[3], color: '#5b8aa6' },
+      ];
+    }
+    if (kind === 'cloudy') {
+      return [
+        { from: YOU_NODE,  to: PEERS[1], color: '#00A862' },
+        { from: YOU_NODE,  to: PEERS[6], color: '#00A862' },
+        { from: GRID_NODE, to: PEERS[4], color: '#8aa69b' }, // grid → school (downwards)
+        { from: GRID_NODE, to: PEERS[2], color: '#8aa69b' }, // grid → north shop (upwards)
+        { from: PEERS[3],  to: PEERS[5], color: '#6FCBA0' }, // peer-to-peer in light green
+      ];
+    }
     return [
-      { from: YOU_NODE,  to: PEERS[1], color: '#00C06F' },  // YOU → home (NW-ish)
-      { from: YOU_NODE,  to: PEERS[6],  color: '#00A862' },  // YOU → shop
-      { from: GRID_NODE, to: PEERS[4],  color: '#8aa69b' },  // GRID → school
-      { from: GRID_NODE, to: PEERS[3],  color: '#8aa69b' },  // GRID → home (next to school)
-      { from: PEERS[8], to: PEERS[2],  color: '#00A862' },  // home → shop (peer↔peer)
+      { from: YOU_NODE,  to: PEERS[1], color: '#00C06F' },
+      { from: YOU_NODE,  to: PEERS[6], color: '#00A862' },
+      { from: YOU_NODE,  to: PEERS[8], color: '#00C06F' },
+      // Adjacent peer-to-peer trades (close neighbours, kept clean)
+      { from: PEERS[0],  to: PEERS[1], color: '#6FCBA0' }, // NW pair
+      { from: PEERS[3],  to: PEERS[4], color: '#6FCBA0' }, // NE pair (home → school)
+      { from: PEERS[5],  to: PEERS[6], color: '#6FCBA0' }, // SE pair
     ];
-  }, []);
+  }, [kind]);
 
   return (
     <svg viewBox="0 0 360 295" style={{ width: '100%', height: '100%', display: 'block' }}>
