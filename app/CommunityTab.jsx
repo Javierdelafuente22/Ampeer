@@ -4,6 +4,7 @@ function CommunityTab({ highlight, onClearHighlight, weatherState }) {
   const [tick, setTick] = React.useState(0);
   const [glowing, setGlowing] = React.useState(false);
   const [inviteMethod, setInviteMethod] = React.useState(null); // null | 'share' | 'clipboard'
+  const [popup, setPopup] = React.useState(null); // null | { title, insight }
 
   const handleInvite = async () => {
     const url = 'https://javierdelafuente22.github.io/Ampeer/';
@@ -59,7 +60,7 @@ function CommunityTab({ highlight, onClearHighlight, weatherState }) {
 
       <div style={{ padding: '0 0 120px' }}>
         <div className="t-label" style={{ color: 'var(--ink-500)', fontSize: 13, padding: '0 24px 14px' }}>
-          Anonymous trades within 1km
+          Anonymous trades within 5km
         </div>
         {/* Map canvas */}
         <div style={{
@@ -78,7 +79,15 @@ function CommunityTab({ highlight, onClearHighlight, weatherState }) {
           animation: glowing ? 'pwMapGlow 3.2s ease-in-out forwards' : 'none',
           transition: 'background 0.6s ease',
         }}>
-          <CommunityMap tick={tick} kind={activeKind} />
+          <CommunityMap tick={tick} kind={activeKind} onTap={setPopup} />
+
+          {popup && (
+            <NodeInsightPopup
+              title={popup.title}
+              insight={popup.insight}
+              onClose={() => setPopup(null)}
+            />
+          )}
 
           {/* Legend */}
           <div style={{
@@ -345,7 +354,7 @@ function Swatch({ color, label }) {
 // Animated map with anonymized nodes. 10 peers + grid node + you.
 // Positions are stable, flows are randomized per tick to feel alive.
 const PEERS = [
-{ x: 72, y: 92, type: 'home' },
+{ x: 72, y: 92, type: 'shop' },
 { x: 130, y: 70, type: 'home' },
 { x: 200, y: 84, type: 'shop' },
 { x: 268, y: 106, type: 'home' },
@@ -359,7 +368,31 @@ const PEERS = [
 const GRID_NODE = { x: 220, y: 185 };
 const YOU_NODE = { x: 140, y: 160 };
 
-function CommunityMap({ tick, kind }) {
+// Per-node insights, shown in a popup when a node is tapped. Indices align with PEERS;
+// each entry must match the type at the same index so e.g. shops get shop-flavoured copy.
+const PEER_INSIGHTS = [
+  'Local shops often need steady power during the day.',
+  'Homes nearby usually use extra solar energy in the evening.',
+  'More shop owners are buying solar panels to power their operations.',
+  'Shorter distances mean less energy is lost across the grid.',
+  'Schools are a strong match for daytime solar generation.',
+  'Your surplus is shared first with nearby homes before the grid.',
+  'Local production helps keep more renewable energy in the network.',
+  'Energy is routed automatically based on local demand and prices.',
+  'Trading energy locally reduces pressure on the national grid.',
+  'Homes with EVs often need extra energy at night.',
+];
+const TYPE_TITLE = { home: 'Home', shop: 'Shop', school: 'School' };
+const GRID_INSIGHT = 'The grid balances supply and demand when local trading is not enough.';
+
+function CommunityMap({ tick, kind, onTap }) {
+  const youInsight = kind === 'night'
+    ? "You're drawing from your battery overnight."
+    : kind === 'rainy'
+      ? "You're running on battery and grid power — nothing to share today."
+      : kind === 'cloudy'
+        ? "You're sharing a small surplus when your panels can spare it."
+        : "You're exporting surplus solar to nearby neighbours.";
   // Active flows depend on the weather kind (driven by Home tab override).
   // Sunny: vibrant peer-to-peer + lots of YOU → trades.
   // Cloudy: mix of YOU → and GRID → flows; modest activity.
@@ -439,7 +472,9 @@ function CommunityMap({ tick, kind }) {
       )}
 
       {/* Grid node */}
-      <g transform={`translate(${GRID_NODE.x}, ${GRID_NODE.y})`}>
+      <g transform={`translate(${GRID_NODE.x}, ${GRID_NODE.y})`}
+        onClick={() => onTap({ title: 'Grid', insight: GRID_INSIGHT })}
+        style={{ cursor: 'pointer' }}>
         <circle r="22" fill="#fff" stroke="#6B7370" strokeWidth="1.4" />
         <g transform="translate(-12, -12)" color="#6B7370">
           <IconGrid size={24} />
@@ -448,11 +483,14 @@ function CommunityMap({ tick, kind }) {
 
       {/* Peer houses */}
       {PEERS.map((p, i) =>
-      <PeerNode key={i} x={p.x} y={p.y} type={p.type} pulse={0.6 + 0.4 * Math.sin(tick * 2 + i)} />
+      <PeerNode key={i} x={p.x} y={p.y} type={p.type} pulse={0.6 + 0.4 * Math.sin(tick * 2 + i)}
+        onTap={() => onTap({ title: TYPE_TITLE[p.type], insight: PEER_INSIGHTS[i] })} />
       )}
 
       {/* YOU — pulsing center */}
-      <g transform={`translate(${YOU_NODE.x}, ${YOU_NODE.y})`}>
+      <g transform={`translate(${YOU_NODE.x}, ${YOU_NODE.y})`}
+        onClick={() => onTap({ title: 'You', insight: youInsight })}
+        style={{ cursor: 'pointer' }}>
         <circle r={30 + Math.sin(tick * 2) * 2} fill="url(#youGlow)" />
         <circle r="19" fill="var(--lime-500)" stroke="#fff" strokeWidth="2" />
         <text x="0" y="4" textAnchor="middle" fontSize="10" fontFamily="Inter, Geist, sans-serif"
@@ -464,7 +502,7 @@ function CommunityMap({ tick, kind }) {
 
 }
 
-function PeerNode({ x, y, type, pulse }) {
+function PeerNode({ x, y, type, pulse, onTap }) {
   const icon = {
     home: (
       <svg x="-9" y="-9" width="18" height="18" viewBox="0 0 24 24" fill="none"
@@ -487,7 +525,7 @@ function PeerNode({ x, y, type, pulse }) {
   }[type];
 
   return (
-    <g transform={`translate(${x}, ${y})`}>
+    <g transform={`translate(${x}, ${y})`} onClick={onTap} style={{ cursor: 'pointer' }}>
       <circle r="16" fill="var(--ink-900)" opacity={0.9} />
       <circle r="16" fill="none" stroke="var(--lime-400)" strokeWidth="1" opacity={pulse * 0.5} />
       {icon}
@@ -533,6 +571,52 @@ function AnimatedFlow({ from, to, color, tick, delay = 0 }) {
         </circle>
       )}
     </g>);
+
+}
+
+function NodeInsightPopup({ title, insight, onClose }) {
+  return (
+    <div onClick={onClose} style={{
+      position: 'absolute', inset: 0,
+      background: 'rgba(20,28,24,0.32)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      zIndex: 5, borderRadius: 'var(--r-lg)',
+      padding: 20,
+    }}>
+      <div onClick={(e) => e.stopPropagation()} style={{
+        width: 240, padding: '14px 16px 14px',
+        background: 'var(--surface)',
+        borderRadius: 'var(--r-md)',
+        border: '1px solid var(--cream-200)',
+        boxShadow: '0 12px 36px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.08)',
+        position: 'relative',
+        fontFamily: 'var(--font-sans)',
+      }}>
+        <button onClick={onClose} aria-label="Close" style={{
+          position: 'absolute', top: 6, right: 6,
+          width: 26, height: 26, borderRadius: 999, border: 0,
+          background: 'transparent', cursor: 'pointer',
+          color: 'var(--ink-500)', fontSize: 18, lineHeight: 1,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          padding: 0,
+        }}>×</button>
+        <div style={{
+          fontSize: 14, fontWeight: 600,
+          color: 'var(--ink-900)', letterSpacing: '-0.01em',
+          marginBottom: 10, paddingRight: 22,
+        }}>{title}</div>
+        <div style={{
+          fontSize: 12, color: 'var(--ink-600)',
+          lineHeight: 1.45,
+          display: 'flex', alignItems: 'flex-start', gap: 6,
+        }}>
+          <span style={{ color: 'var(--lime-600)', marginTop: 1, flexShrink: 0, display: 'inline-flex' }}>
+            <IconSparkle size={12}/>
+          </span>
+          <span>{insight}</span>
+        </div>
+      </div>
+    </div>);
 
 }
 
