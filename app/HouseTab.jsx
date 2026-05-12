@@ -537,6 +537,7 @@ function NodePopup({ kind, weatherKind, temp, scene, prices, onClose, onNavigate
       rows: [
         ['Peer-to-peer price', `${fmtP(prices.p2p)}p / kWh`],
       ],
+      note: 'The peer price is the midpoint between the grid’s import and export prices.',
       insight: communityInsight,
       cta: { label: 'Explore your community', onClick: () => { onClose(); onNavigate && onNavigate('community'); } },
     },
@@ -594,6 +595,16 @@ function NodePopup({ kind, weatherKind, temp, scene, prices, onClose, onNavigate
             }}>{value}</span>
           </div>
         ))}
+        {c.note && (
+          <div style={{
+            marginTop: 4, paddingTop: 10,
+            borderTop: '1px solid var(--cream-200)',
+            fontSize: 12, color: 'var(--ink-600)',
+            lineHeight: 1.45,
+          }}>
+            {c.note}
+          </div>
+        )}
         {c.insight && (
           <div style={{
             marginTop: 4, paddingTop: 10,
