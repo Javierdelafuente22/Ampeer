@@ -216,7 +216,7 @@ function ProfileTab() {
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--ink-900)', letterSpacing: '-0.005em' }}>Sarah Chen</div>
               <div style={{ fontSize: 12, color: 'var(--ink-600)' }}>
-                SW6 3JD · Fulham · Member since Apr 2026
+                SW6 3JD · London · Member since Apr 2026
               </div>
             </div>
             <div style={{

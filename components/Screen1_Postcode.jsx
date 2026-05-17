@@ -6,7 +6,7 @@ function Screen1_Postcode({ state, setState, onNext }) {
   const [peerInfoOpen, setPeerInfoOpen] = React.useState(false);
 
   // Mock resolved data — always available since postcode is pre-filled
-  const areaData = { area: 'Fulham', neighbors: 47 };
+  const areaData = { area: 'London', neighbors: 47 };
 
   const handleNext = () => {
     setState(s => ({ ...s, postcode: postcode.toUpperCase(), communityId, area: areaData.area }));
@@ -44,7 +44,7 @@ function Screen1_Postcode({ state, setState, onNext }) {
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div className="t-body" style={{ fontSize: 14, color: 'var(--ink-900)', fontWeight: 500 }}>
-                You're in <span style={{ fontWeight: 600 }}>{areaData.area}</span> · {postcode}
+                You're in <span style={{ fontWeight: 600 }}>{areaData.area}</span>
               </div>
               <div className="t-body" style={{ fontSize: 13, color: 'var(--ink-600)', marginTop: 1 }}>
                 <span className="t-num" style={{ fontSize: 14, color: 'var(--ink-900)', fontWeight: 600 }}>{areaData.neighbors}</span> neighbours are trading nearby

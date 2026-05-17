@@ -308,7 +308,7 @@ function WeatherPill({ isLoading, override, onTap }) {
   let dotColor, text;
   if (override)         { dotColor = '#E4A23A'; text = `Demo · ${override}`; }
   else if (isLoading)   { dotColor = '#9CA3A0'; text = 'Connecting…'; }
-  else                  { dotColor = '#00C06F'; text = 'Connected'; }
+  else                  { dotColor = '#00C06F'; text = 'Connected - click for demo'; }
   const pulse = !override && !isLoading;
 
   return (
@@ -376,7 +376,7 @@ function OverridePanel({ override, onChange, liveKind, isLive, isLoading, hasErr
                 ? `Demo override · ${override}`
                 : isLoading ? 'Connecting to weather…'
                 : hasError  ? 'Could not reach weather (using sunny)'
-                : `Live · ${liveKind} in Fulham`}
+                : `Live · ${liveKind} in London`}
             </div>
           </div>
         </div>

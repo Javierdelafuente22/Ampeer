@@ -6,8 +6,8 @@ function DashboardTab({ onNavigate }) {
   const [pdfOpen, setPdfOpen] = React.useState(false);
 
   const data = {
-    week:  { saved: 8.40,  savedTrend: '+12% vs last week', co2: 14.2,  kwh: 38,  insight: '23% better than Fulham average. Chat to your assistant to climb the leaderboard' },
-    month: { saved: 38.20, savedTrend: '+18% vs last month', co2: 62.8,  kwh: 168, insight: '41% better than Fulham average. Chat to your assistant to climb the leaderboard' },
+    week:  { saved: 8.40,  savedTrend: '+12% vs last week', co2: 14.2,  kwh: 38,  insight: '23% better than London average. Chat to your assistant to climb the leaderboard' },
+    month: { saved: 38.20, savedTrend: '+18% vs last month', co2: 62.8,  kwh: 168, insight: '41% better than London average. Chat to your assistant to climb the leaderboard' },
     year:  { saved: 284.60, savedTrend: 'On track for £440', co2: 540.1, kwh: 1420, insight: "You're top 3 in your community. Chat to your assistant to climb the leaderboard" },
   }[window];
 
