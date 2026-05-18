@@ -139,7 +139,7 @@ function AssistantTab() {
 
     // 0) GREETING — bare hi / hello / etc. Strict ^…$ so messages like
     //    "hi, how do I trade?" still fall through to the right matcher.
-    if (/^(hi|hello|hey|hiya|howdy|yo|sup|hola|good (morning|afternoon|evening|day)|what'?s up|whatsup)( there| ampeer)?[\s.,!?]*$/i.test(t)) {
+    if (/^(hi|hello|hey|hiii|hellooo|hii|helloo|hiya|howdy|yo|sup|hola|good (morning|afternoon|evening|day)|what'?s up|whatsup)( there| ampeer)?[\s.,!?]*$/i.test(t)) {
       return {
         role: 'ai', type: 'message', ts: 'now',
         text: "Hi Sarah! I'm here to help with your energy. Want me to plan around a holiday, your work schedule, or EV charging? Just tell me what's coming up."
