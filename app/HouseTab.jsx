@@ -183,6 +183,28 @@ function HouseTab({ onNavigate, highlight, onClearHighlight, weatherState }) {
           transition: 'background 0.6s ease',
         }}>
           <HouseScene tick={tick} kind={activeKind} onTap={setPopup}/>
+
+          {/* Hint that map nodes are tappable. Sits inside the canvas, top-right;
+              non-interactive so taps still reach the underlying icons. */}
+          <div style={{
+            position: 'absolute', top: 12, right: 12,
+            padding: '5px 10px 5px 8px',
+            background: 'rgba(255,255,255,0.85)',
+            backdropFilter: 'blur(6px)',
+            WebkitBackdropFilter: 'blur(6px)',
+            border: '1px solid var(--cream-200)',
+            borderRadius: 999,
+            display: 'inline-flex', alignItems: 'center', gap: 6,
+            fontSize: 11, color: 'var(--ink-700)',
+            fontFamily: 'var(--font-sans)', fontWeight: 500,
+            letterSpacing: '-0.005em',
+            pointerEvents: 'none',
+            boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+            zIndex: 2,
+          }}>
+            <span>Tap any icon for details</span>
+          </div>
+
           {popup && (
             <NodePopup
               kind={popup}
@@ -334,6 +356,9 @@ function WeatherPill({ isLoading, override, onTap }) {
 function OverridePanel({ override, onChange, liveKind, isLive, isLoading, hasError, onBack }) {
   const options = ['sunny', 'cloudy', 'rainy', 'night'];
   const sliderValue = options.indexOf(override || liveKind);
+  // If the override matches the live state, treat the panel as live — no visual
+  // difference, so calling it a "demo override" is misleading.
+  const effectiveOverride = override && override !== liveKind ? override : null;
 
   return (
     <div className="pw-screen">
@@ -355,7 +380,7 @@ function OverridePanel({ override, onChange, liveKind, isLive, isLoading, hasErr
           fontSize: 14, lineHeight: 1.55, color: 'var(--ink-700)',
           margin: '0 0 24px',
         }}>
-          Only for demo purposes, move the slider to switch between sunny, cloudy and rainy. Tap "Reset to live" to use real-time weather data from Met UK.
+          Only for demo purposes, move the slider to switch between sunny, cloudy, rainy and night. Tap "Reset" in the status box to restore real-time weather data from Met UK.
         </p>
 
         <div style={{
@@ -366,19 +391,33 @@ function OverridePanel({ override, onChange, liveKind, isLive, isLoading, hasErr
         }}>
           <span style={{
             width: 8, height: 8, borderRadius: 999,
-            background: override ? '#E4A23A' : (isLive ? '#00C06F' : (hasError ? '#D4524B' : '#9CA3A0')),
+            background: effectiveOverride ? '#E4A23A' : (isLive ? '#00C06F' : (hasError ? '#D4524B' : '#9CA3A0')),
             flexShrink: 0,
           }}/>
           <div style={{ flex: 1, minWidth: 0 }}>
             <div className="t-label" style={{ color: 'var(--ink-500)', fontSize: 11, marginBottom: 2 }}>Status</div>
             <div style={{ fontSize: 13, color: 'var(--ink-900)', fontWeight: 500 }}>
-              {override
-                ? `Demo override · ${override}`
+              {effectiveOverride
+                ? `Demo override · ${effectiveOverride}`
                 : isLoading ? 'Connecting to weather…'
                 : hasError  ? 'Could not reach weather (using sunny)'
                 : `Live · ${liveKind} in London`}
             </div>
           </div>
+          {effectiveOverride && (
+            <button onClick={() => onChange(null)} style={{
+              appearance: 'none', cursor: 'pointer',
+              border: '1px solid var(--cream-200)',
+              background: 'var(--cream-100)',
+              padding: '5px 12px', borderRadius: 999,
+              fontSize: 11, color: 'var(--ink-700)',
+              fontFamily: 'var(--font-sans)', fontWeight: 500,
+              letterSpacing: '-0.005em',
+              flexShrink: 0,
+            }}>
+              Reset
+            </button>
+          )}
         </div>
 
         <div className="t-label" style={{ color: 'var(--ink-500)', fontSize: 11, marginBottom: 14 }}>
@@ -414,25 +453,24 @@ function OverridePanel({ override, onChange, liveKind, isLive, isLoading, hasErr
           }}>
             Showing: <span style={{ color: 'var(--ink-900)', fontWeight: 600, textTransform: 'capitalize' }}>
               {override || liveKind}
-            </span> {override ? '(override)' : '(live)'}
+            </span> {effectiveOverride ? '(override)' : '(live)'}
           </div>
         </div>
 
         <button
-          onClick={() => onChange(null)}
-          disabled={!override}
+          onClick={onBack}
           style={{
-            appearance: 'none', cursor: override ? 'pointer' : 'default',
+            appearance: 'none', cursor: 'pointer',
             width: '100%', padding: '12px 14px',
-            background: override ? 'var(--ink-900)' : 'var(--cream-100)',
-            color: override ? '#fff' : 'var(--ink-400)',
-            border: '1px solid ' + (override ? 'var(--ink-900)' : 'var(--cream-200)'),
+            background: 'var(--ink-900)',
+            color: '#fff',
+            border: '1px solid var(--ink-900)',
             borderRadius: 'var(--r-md)',
             fontSize: 14, fontWeight: 500,
             fontFamily: 'var(--font-sans)',
             letterSpacing: '-0.005em',
           }}>
-          Reset to real-time data
+          Back to home
         </button>
       </div>
     </div>
@@ -707,9 +745,12 @@ function HouseScene({ tick, kind, onTap }) {
         </g>
       )}
 
-      {/* CLOUDS — small accent on cloudy, heavy on rainy (rainy clouds are tappable as 'sun') */}
+      {/* CLOUDS — small accent on cloudy, heavy on rainy. In both states the
+          cloud group is tappable as 'sun' so the spread-out left/right clouds
+          (which sit outside the sun's 100x100 hit area) still open the popup. */}
       {kind === 'cloudy' && (
-        <g style={{ pointerEvents: 'none' }}>
+        <g style={tappableStyle} onClick={tap('sun')}>
+          <rect x={SUN_X - 150} y={SUN_Y - 45} width="290" height="90" fill="transparent"/>
           <Cloud cx={SUN_X + 26}  cy={SUN_Y + 8}   scale={1.05}/>
           <Cloud cx={SUN_X - 78}  cy={SUN_Y + 22}  scale={1.2}/>
           <Cloud cx={SUN_X - 130} cy={SUN_Y - 20}  scale={1.1}/>

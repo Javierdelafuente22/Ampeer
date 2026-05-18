@@ -1,5 +1,5 @@
 // Screen 2 — Connection success
-function Screen2_Connected({ onNext, provider = 'your energy provider' }) {
+function Screen2_Connected({ onNext, onBack, provider = 'your energy provider' }) {
   const [ready, setReady] = React.useState(false);
   // Checkmark lands at ~0.75s; enable CTA shortly after
   React.useEffect(() => {
@@ -8,7 +8,7 @@ function Screen2_Connected({ onNext, provider = 'your energy provider' }) {
   }, []);
 
   return (
-    <PwScreen step={1}>
+    <PwScreen step={1} onBack={onBack}>
       <PwPageTitle
         eyebrow="Step 1 of 4 — Your smart meter"
         title="You're connected."

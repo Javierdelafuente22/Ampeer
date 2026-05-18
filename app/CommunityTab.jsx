@@ -7,7 +7,7 @@ function CommunityTab({ highlight, onClearHighlight, weatherState }) {
   const [popup, setPopup] = React.useState(null); // null | { title, insight }
 
   const handleInvite = async () => {
-    const url = 'https://javierdelafuente22.github.io/Ampeer/';
+    const url = 'https://www.ampeerenergy.com';
     try {
       if (navigator.share) {
         await navigator.share({

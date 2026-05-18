@@ -53,13 +53,17 @@ function useWeatherState() {
   const isNight = isUKNight(now);
   // Time wins over weather: at night, kind is 'night' regardless of cloud cover.
   const liveKind = isNight ? 'night' : (weather?.kind ?? 'sunny');
-  const activeKind = override || liveKind;
+  // An override that matches the live kind has no visible effect, so we expose it
+  // as null. That way the WeatherPill, status dot, and "isLive" flag all treat
+  // the app as connected/live without the user needing to hit Reset.
+  const effectiveOverride = override && override !== liveKind ? override : null;
+  const activeKind = effectiveOverride || liveKind;
   const activeTemp = weather?.temp ?? 18;
   const isLoading = !weather;
   const hasError = !!weather?.error;
-  const isLive = !override && weather && !hasError;
+  const isLive = !effectiveOverride && weather && !hasError;
 
-  return { weather, override, setOverride, liveKind, activeKind, activeTemp, isLoading, hasError, isLive };
+  return { weather, override: effectiveOverride, setOverride, liveKind, activeKind, activeTemp, isLoading, hasError, isLive };
 }
 
 function MainAppShell() {

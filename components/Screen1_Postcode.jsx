@@ -18,7 +18,7 @@ function Screen1_Postcode({ state, setState, onNext }) {
       <div style={{ marginBottom: 28 }}/>
       <PwPageTitle
         eyebrow=""
-        title="Welcome to Ampeer, Sarah."
+        title="Welcome to Ampeer."
         subtitle="You have been securely redirected from your Octopus online account. You are a few steps away from sharing energy with your neighbours."
         size={34}
       />

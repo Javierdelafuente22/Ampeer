@@ -22,7 +22,7 @@ function OnboardingFlow({ onComplete }) {
 
   const screens = [
     <Screen1_Postcode key="s1" state={state} setState={setState} onNext={goNext}/>,
-    <Screen2_Connected key="s2" provider="your energy provider" onNext={goNext}/>,
+    <Screen2_Connected key="s2" provider="your energy provider" onNext={goNext} onBack={goBack}/>,
     <Screen3_Savings   key="s3" state={state} onNext={goNext} onBack={goBack}/>,
     <Screen4_Profile   key="s4" state={state} setState={setState} onNext={goNext} onBack={goBack}/>,
     <Screen5_Legal     key="s5" onNext={goNext} onBack={goBack}/>,
